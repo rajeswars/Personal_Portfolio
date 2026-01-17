@@ -1,0 +1,2552 @@
+<!DOCTYPE html>
+<html lang="en" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rajeswar S | Portfolio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon': '#B0F127',
+                        'bg-dark': '#050505',
+                        'card-dark': '#0F0F0F',
+                        'border-dark': '#27272A',
+                    },
+                    fontFamily: {
+                        sans: ['Manrope', 'sans-serif'],
+                    },
+                    animation: {
+                        'marquee': 'marquee 25s linear infinite',
+                    },
+                    keyframes: {
+                        marquee: {
+                            '0%': { transform: 'translateX(0%)' },
+                            '100%': { transform: 'translateX(-100%)' },
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+
+    <link href="https://fonts.googleapis.com/css2?family=Anton&display=swap" rel="stylesheet">
+
+    <style>
+        .font-anton {
+            font-family: 'Anton', sans-serif;
+        }
+
+        /* --- GLOBAL EFFECTS & TEXTURES --- */
+
+        /* 1. Cinematic Noise Overlay */
+        .noise-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+            opacity: 0.05;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+        }
+
+        /* 2. Custom Neon Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: #B0F127;
+            box-shadow: 0 0 10px #B0F127;
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 1px solid rgba(176, 241, 39, 0.5);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* Global Snow Container */
+        #global-snow-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            /* Behind text but visible */
+            overflow: hidden;
+        }
+
+        .snowflake {
+            position: absolute;
+            top: -10px;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            pointer-events: none;
+            animation: fall linear infinite;
+        }
+
+        @keyframes fall {
+            to {
+                transform: translateY(105vh);
+            }
+        }
+
+        /* Standard Styles */
+        body {
+            background-color: #050505;
+            color: white;
+            overflow-x: hidden;
+            cursor: none;
+            /* Hide default cursor */
+        }
+
+        a,
+        button,
+        .hover-target {
+            cursor: none;
+            /* Ensure custom cursor is used */
+        }
+
+        .text-outline {
+            -webkit-text-stroke: 1px rgba(255, 255, 255, 0.05);
+            color: transparent;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #B0F127;
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(50px);
+            transition: all 1s cubic-bezier(0.5, 0, 0, 1);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .delay-100 {
+            transition-delay: 0.1s;
+        }
+
+        .delay-200 {
+            transition-delay: 0.2s;
+        }
+
+        .delay-300 {
+            transition-delay: 0.3s;
+        }
+
+        /* Marquee Styles */
+        .text-outline-bg {
+            -webkit-text-stroke: 2px rgba(255, 255, 255, 0.15);
+            color: transparent;
+            font-family: 'Anton', sans-serif;
+        }
+
+        .marquee-wrapper {
+            display: flex;
+            width: 100%;
+            overflow: hidden;
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            align-items: center;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .marquee-track {
+            display: flex;
+            white-space: nowrap;
+            animation: scrollText 40s linear infinite;
+        }
+
+        @keyframes scrollText {
+            0% {
+                transform: translateX(0);
+            }
+
+            100% {
+                transform: translateX(-50%);
+            }
+        }
+
+        @keyframes marquee {
+            0% {
+                transform: translateX(0%);
+            }
+
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        .animate-marquee {
+            animation: marquee 20s linear infinite;
+        }
+
+        /* --- NEW ANIMATIONS --- */
+
+        /* 1. PRELOADER */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #000;
+            z-index: 10000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            transition: opacity 0.8s ease-out, visibility 0.8s;
+        }
+
+        .loader-bar {
+            width: 200px;
+            height: 2px;
+            background: #222;
+            margin-top: 20px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader-progress {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: #B0F127;
+            box-shadow: 0 0 10px #B0F127;
+            animation: loadProgress 2s ease-in-out forwards;
+        }
+
+        @keyframes loadProgress {
+            0% {
+                width: 0%;
+            }
+
+            40% {
+                width: 30%;
+            }
+
+            80% {
+                width: 85%;
+            }
+
+            100% {
+                width: 100%;
+            }
+        }
+
+        /* 2. GLITCH EFFECT */
+        .glitch-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .glitch {
+            position: relative;
+            color: #fff;
+        }
+
+        .glitch::before,
+        .glitch::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+        }
+
+        .glitch::before {
+            left: 2px;
+            text-shadow: -1px 0 #B0F127;
+            clip-path: inset(24% 0 13% 0);
+            animation: glitch-anim-1 2.5s infinite linear alternate-reverse;
+        }
+
+        .glitch::after {
+            left: -2px;
+            text-shadow: -1px 0 #ff00c1;
+            clip-path: inset(85% 0 3% 0);
+            animation: glitch-anim-2 3s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim-1 {
+            0% {
+                clip-path: inset(80% 0 20% 0);
+            }
+
+            20% {
+                clip-path: inset(15% 0 60% 0);
+            }
+
+            40% {
+                clip-path: inset(50% 0 10% 0);
+            }
+
+            60% {
+                clip-path: inset(10% 0 80% 0);
+            }
+
+            80% {
+                clip-path: inset(40% 0 40% 0);
+            }
+
+            100% {
+                clip-path: inset(90% 0 5% 0);
+            }
+        }
+
+        @keyframes glitch-anim-2 {
+            0% {
+                clip-path: inset(10% 0 80% 0);
+            }
+
+            20% {
+                clip-path: inset(80% 0 10% 0);
+            }
+
+            40% {
+                clip-path: inset(30% 0 60% 0);
+            }
+
+            60% {
+                clip-path: inset(70% 0 20% 0);
+            }
+
+            80% {
+                clip-path: inset(20% 0 50% 0);
+            }
+
+            100% {
+                clip-path: inset(50% 0 30% 0);
+            }
+        }
+
+        /* 3. TILT CARD 3D */
+        .tilt-card {
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+        }
+
+        .tilt-inner {
+            transform: translateZ(20px);
+        }
+    </style>
+</head>
+
+<body class="selection:bg-neon selection:text-black">
+
+    <div id="preloader">
+        <div class="font-anton text-4xl md:text-6xl text-white tracking-widest uppercase mb-2">
+            SYSTEM <span class="text-neon">INITIALIZING</span>
+        </div>
+        <div class="font-mono text-neon text-xs md:text-sm animate-pulse">
+            // ESTABLISHING SECURE CONNECTION...
+        </div>
+        <div class="loader-bar">
+            <div class="loader-progress"></div>
+        </div>
+    </div>
+
+    <div class="noise-overlay"></div>
+    <div id="cursor-dot" class="cursor-dot hidden md:block"></div>
+    <div id="cursor-outline" class="cursor-outline hidden md:block"></div>
+    <div id="global-snow-container"></div>
+
+    <nav class="fixed top-6 left-0 right-0 z-50 flex justify-center px-4 reveal active">
+        <div
+            class="bg-[#121212]/80 backdrop-blur-md border border-white/10 rounded-full px-2 py-2 flex items-center gap-1 shadow-2xl">
+            <a href="#home"
+                class="hacker-text text-sm font-medium text-gray-400 px-6 py-2.5 rounded-full transition-all duration-300 hover:bg-neon hover:text-black hidden md:block"
+                data-value="Home">Home</a>
+            <a href="#about"
+                class="hacker-text text-sm font-medium text-gray-400 px-6 py-2.5 rounded-full transition-all duration-300 hover:bg-neon hover:text-black hidden md:block"
+                data-value="About">About</a>
+            <a href="#expertise"
+                class="hacker-text text-sm font-medium text-gray-400 px-6 py-2.5 rounded-full transition-all duration-300 hover:bg-neon hover:text-black hidden md:block"
+                data-value="Expertise">Expertise</a>
+
+            <div
+                class="mx-2 bg-neon text-black font-extrabold h-10 w-10 rounded-full flex items-center justify-center text-xl hover:scale-110 transition-transform">
+                rj</div>
+
+            <a href="#skills"
+                class="hacker-text text-sm font-medium text-gray-400 px-6 py-2.5 rounded-full transition-all duration-300 hover:bg-neon hover:text-black hidden md:block"
+                data-value="Skills">Skills</a>
+
+            <a href="#projects"
+                class="hacker-text text-sm font-medium text-gray-400 px-6 py-2.5 rounded-full transition-all duration-300 hover:bg-neon hover:text-black hidden md:block"
+                data-value="Work">Work</a>
+
+            <a href="#contact"
+                class="hacker-text text-sm font-medium text-gray-400 px-6 py-2.5 rounded-full transition-all duration-300 hover:bg-neon hover:text-black"
+                data-value="Contact">Contact</a>
+        </div>
+    </nav>
+
+    <section id="home" class="relative min-h-screen flex flex-col justify-center items-center overflow-hidden bg-black">
+
+        <div class="marquee-wrapper flex-col justify-center gap-32 opacity-30">
+            <div class="marquee-track">
+                <span class="text-[15vh] leading-none font-black text-outline-bg px-8">UI DESIGNER FRONT END
+                    DEVELOPER</span>
+                <span class="text-[15vh] leading-none font-black text-outline-bg px-8">UI DESIGNER FRONT END
+                    DEVELOPER</span>
+                <span class="text-[15vh] leading-none font-black text-outline-bg px-8">UI DESIGNER FRONT END
+                    DEVELOPER</span>
+            </div>
+
+            <div class="marquee-track" style="animation-direction: reverse;">
+                <span class="text-[15vh] leading-none font-black text-outline-bg px-8">FRONT END DEVELOPER UI
+                    DESIGNER</span>
+                <span class="text-[15vh] leading-none font-black text-outline-bg px-8">FRONT END DEVELOPER UI
+                    DESIGNER</span>
+                <span class="text-[15vh] leading-none font-black text-outline-bg px-8">FRONT END DEVELOPER UI
+                    DESIGNER</span>
+            </div>
+        </div>
+
+        <div class="z-10 text-center flex flex-col items-center relative">
+
+            <div class="relative mt-10 mb-12 group hover:-translate-y-1 transition-transform duration-300">
+                <div
+                    class="px-6 py-1.5 rounded-full border border-white text-white text-base font-medium bg-black relative z-10">
+                    Hello!
+                </div>
+
+                <svg class="absolute -top-6 -right-8 w-10 h-10 text-neon animate-pulse" viewBox="0 0 100 100"
+                    fill="none" stroke="currentColor" stroke-width="5" stroke-linecap="round">
+                    <path d="M25 75 Q 50 30 65 15" />
+                    <path d="M55 85 Q 75 50 90 25" />
+                    <path d="M75 95 Q 85 75 95 55" />
+                </svg>
+            </div>
+
+            <h1
+                class="flex flex-col md:flex-row items-center md:items-end justify-center gap-2 md:gap-6 text-neon text-[100px] md:text-[250px] leading-[0.8] font-anton uppercase tracking-wide drop-shadow-[0_10px_10px_rgba(0,0,0,0.8)]">
+
+                <span class="text-[40px] md:text-[80px] text-transparent md:mb-8"
+                    style="-webkit-text-stroke: 2px white;">I'M</span>
+
+                <div class="glitch-wrapper">
+                    <span class="glitch hover:text-white transition-colors duration-500"
+                        data-text="RAJESWAR">RAJESWAR</span>
+                </div>
+            </h1>
+
+            <p
+                class="text-gray-300 text-sm md:text-xl max-w-lg mx-auto font-light mt-8 tracking-wide font-sans bg-black/40 backdrop-blur-sm px-6 py-2 rounded-full border border-white/10">
+                Currently Studying Computer Science and Business Systems
+            </p>
+
+            <div
+                class="mt-8 p-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-md flex items-center gap-1 shadow-2xl hover:scale-105 transition-transform duration-300">
+                <a href="#projects"
+                    class="magnetic-btn px-6 py-2.5 rounded-full bg-neon text-black font-bold text-sm md:text-base flex items-center gap-2 hover:bg-white transition-colors group">
+                    <span class="relative z-10 flex items-center gap-2">
+                        Portfolio
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none"
+                            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+                            class="group-hover:-translate-y-0.5 group-hover:translate-x-0.5 transition-transform">
+                            <line x1="7" y1="17" x2="17" y2="7"></line>
+                            <polyline points="7 7 17 7 17 17"></polyline>
+                        </svg>
+                    </span>
+                </a>
+                <a href="#contact"
+                    class="magnetic-btn px-6 py-2.5 rounded-full text-white font-bold text-sm md:text-base hover:text-neon transition-colors">
+                    <span class="relative z-10">Contact Me</span>
+                </a>
+            </div>
+
+            <div class="flex justify-center gap-8 mt-8">
+                <a href="https://www.linkedin.com/in/rajeswars"
+                    class="text-neon bg-black/40 p-3 rounded-full border border-neon/20 hover:bg-neon hover:text-black hover:border-neon transition duration-300 transform hover:scale-110 shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="currentColor" class="w-5 h-5 md:w-6 md:h-6">
+                        <path
+                            d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" />
+                    </svg>
+                </a>
+                <a href="https://github.com/rajeswars"
+                    class="text-neon bg-black/40 p-3 rounded-full border border-neon/20 hover:bg-neon hover:text-black hover:border-neon transition duration-300 transform hover:scale-110 shadow-lg">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
+                        fill="currentColor" class="w-5 h-5 md:w-6 md:h-6">
+                        <path
+                            d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <div class="relative w-full overflow-hidden py-10 bg-black z-20">
+
+        <div
+            class="absolute inset-0 bg-neon -skew-y-2 scale-110 flex items-center border-y-4 border-black shadow-[0_0_50px_rgba(176,241,39,0.4)]">
+
+            <div class="flex whitespace-nowrap animate-marquee">
+
+                <div class="flex items-center gap-12 px-6">
+                    <span class="text-4xl md:text-6xl font-black text-black font-anton tracking-wide">JAVA FULL
+                        STACK</span>
+                    <span class="text-4xl md:text-6xl font-black text-black/30 font-anton">★</span>
+
+                    <span class="text-4xl md:text-6xl font-black text-black font-anton tracking-wide">CLASS OF
+                        2026</span>
+                    <span class="text-4xl md:text-6xl font-black text-black/30 font-anton">★</span>
+
+                    <span class="text-4xl md:text-6xl font-black text-black font-anton tracking-wide">CLOUD
+                        ENTHUSIAST</span>
+                    <span class="text-4xl md:text-6xl font-black text-black/30 font-anton">★</span>
+
+                    <span class="text-4xl md:text-6xl font-black text-black font-anton tracking-wide">PROBLEM
+                        SOLVER</span>
+                    <span class="text-4xl md:text-6xl font-black text-black/30 font-anton">★</span>
+                </div>
+
+                <div class="flex items-center gap-12 px-6">
+                    <span class="text-4xl md:text-6xl font-black text-black font-anton tracking-wide">OPEN TO
+                        WORK</span>
+                    <span class="text-4xl md:text-6xl font-black text-black/30 font-anton">★</span>
+
+                    <span class="text-4xl md:text-6xl font-black text-black font-anton tracking-wide">JAVA FULL
+                        STACK</span>
+                    <span class="text-4xl md:text-6xl font-black text-black/30 font-anton">★</span>
+
+                    <span class="text-4xl md:text-6xl font-black text-black font-anton tracking-wide">CLOUD
+                        ENTHUSIAST</span>
+                    <span class="text-4xl md:text-6xl font-black text-black/30 font-anton">★</span>
+
+                    <span class="text-4xl md:text-6xl font-black text-black font-anton tracking-wide">PROBLEM
+                        SOLVER</span>
+                    <span class="text-4xl md:text-6xl font-black text-black/30 font-anton">★</span>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <section id="philosophy" class="py-32 px-6 relative overflow-hidden bg-black flex justify-center items-center">
+
+        <div
+            class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-neon/5 rounded-full blur-[120px] pointer-events-none">
+        </div>
+
+        <div class="max-w-4xl text-center relative z-10 reveal">
+
+            <div class="flex items-center justify-center gap-4 mb-10 opacity-60">
+                <div class="w-12 h-[1px] bg-neon"></div>
+                <span class="text-neon font-mono text-xs uppercase tracking-[0.4em]">The Philosophy</span>
+                <div class="w-12 h-[1px] bg-neon"></div>
+            </div>
+
+            <h2 class="text-3xl md:text-5xl font-bold text-white leading-tight mb-12">
+                I enjoy building systems where <br class="hidden md:block" />
+                <span class="text-neon">design</span>, <span class="text-neon">logic</span>, and <span
+                    class="text-neon">data</span> meet.
+            </h2>
+
+            <p class="text-lg md:text-2xl text-gray-400 font-light leading-relaxed mb-16 max-w-2xl mx-auto">
+                I like understanding how things flow — from a user click,
+                to data movement, to the final output.
+            </p>
+
+            <div class="relative inline-block group">
+                <div
+                    class="absolute -inset-4 bg-white/5 rounded-lg opacity-0 group-hover:opacity-100 transition duration-500 scale-95 group-hover:scale-100">
+                </div>
+                <p
+                    class="relative text-xl md:text-2xl text-white font-medium italic px-6 py-2 border-l-4 border-neon text-left">
+                    "I’m not obsessed with tools.<br>
+                    <span class="text-gray-400">I’m obsessed with</span> <span
+                        class="text-white border-b-2 border-neon pb-1">why a solution works</span>."
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <section id="about" class="py-32 px-6 relative w-full overflow-hidden bg-black reveal perspective-container">
+
+        <div class="absolute left-10 top-1/2 -translate-y-1/2 hidden lg:block opacity-30 pointer-events-none z-0">
+            <div class="cube-scene">
+                <div class="cube">
+                    <div class="face front"></div>
+                    <div class="face back"></div>
+                    <div class="face right"></div>
+                    <div class="face left"></div>
+                    <div class="face top"></div>
+                    <div class="face bottom"></div>
+                </div>
+            </div>
+        </div>
+
+        <div
+            class="absolute -right-20 top-1/2 -translate-y-1/2 hidden lg:flex justify-center items-center opacity-40 pointer-events-none scale-150 z-0">
+            <div class="absolute w-64 h-64 border border-neon/30 rotate-45 animate-[spin_10s_linear_infinite]"></div>
+            <div class="absolute w-64 h-64 border border-neon/30 rotate-45 animate-[spin_15s_linear_infinite_reverse]">
+            </div>
+            <div class="absolute w-48 h-48 border-2 border-neon rotate-12 animate-[spin_8s_linear_infinite]"></div>
+            <div class="absolute w-32 h-32 bg-neon/10 blur-xl rounded-full animate-pulse"></div>
+        </div>
+
+        <div class="max-w-4xl mx-auto text-center relative z-10">
+
+            <div class="flex justify-center mb-6">
+                <div class="border border-white/20 rounded-full w-8 h-12 flex justify-center pt-2">
+                    <div class="w-1 h-2 bg-neon rounded-full animate-bounce"></div>
+                </div>
+            </div>
+
+            <h2 class="hacker-text text-neon text-6xl font-black mb-12 font-anton uppercase tracking-wide drop-shadow-[0_0_25px_rgba(176,241,39,0.4)]"
+                data-value="ABOUT ME.">
+                about me.
+            </h2>
+
+            <p class="text-xl md:text-2xl text-white font-medium leading-relaxed mb-8">
+                I build real-world, production-oriented systems — <span
+                    class="text-gray-600 line-through decoration-neon decoration-2 opacity-60">not just academic
+                    projects.</span>
+            </p>
+
+            <p class="text-lg md:text-xl text-gray-400 leading-relaxed font-light mb-8 max-w-3xl mx-auto">
+                As a <span class="text-white font-bold border-b border-neon/50 pb-0.5">Computer Science & Business
+                    Systems</span> student, I focus on understanding problems deeply, designing the right system, and
+                implementing it with clean, maintainable code.
+            </p>
+
+            <p class="text-lg md:text-xl text-gray-400 leading-relaxed font-light max-w-3xl mx-auto">
+                My experience spans <span class="text-neon font-medium">IoT surveillance, data-driven web platforms, and
+                    machine learning applications</span>, covering system design, backend logic, API integration, and
+                frontend usability.
+            </p>
+
+            <div class="mt-12 flex justify-center gap-6">
+                <a href="HTML/Resume.pdf" download>
+                    <button
+                        class="bg-white text-black px-8 py-3 rounded-lg font-bold flex items-center gap-2 hover:bg-neon hover:scale-105 transition-all duration-300 shadow-[0_0_20px_rgba(255,255,255,0.2)]">
+                        Download CV
+                        <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                    </button>
+                </a>
+            </div>
+
+
+            <h1
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 text-[150px] md:text-[250px] font-black text-outline opacity-[0.03] select-none -z-10 w-full text-center font-anton whitespace-nowrap">
+                SYSTEMS
+            </h1>
+        </div>
+
+        <style>
+            /* 3D CUBE STYLES */
+            .cube-scene {
+                width: 150px;
+                height: 150px;
+                perspective: 600px;
+            }
+
+            .cube {
+                width: 100%;
+                height: 100%;
+                position: relative;
+                transform-style: preserve-3d;
+                animation: rotateCube 10s infinite linear;
+            }
+
+            .face {
+                position: absolute;
+                width: 150px;
+                height: 150px;
+                border: 2px solid #B0F127;
+                background: rgba(176, 241, 39, 0.05);
+            }
+
+            .face.front {
+                transform: rotateY(0deg) translateZ(75px);
+            }
+
+            .face.back {
+                transform: rotateY(180deg) translateZ(75px);
+            }
+
+            .face.right {
+                transform: rotateY(90deg) translateZ(75px);
+            }
+
+            .face.left {
+                transform: rotateY(-90deg) translateZ(75px);
+            }
+
+            .face.top {
+                transform: rotateX(90deg) translateZ(75px);
+            }
+
+            .face.bottom {
+                transform: rotateX(-90deg) translateZ(75px);
+            }
+
+            @keyframes rotateCube {
+                0% {
+                    transform: rotateX(0deg) rotateY(0deg);
+                }
+
+                100% {
+                    transform: rotateX(360deg) rotateY(360deg);
+                }
+            }
+        </style>
+    </section>
+
+    <div class="w-full py-10 flex justify-center items-center overflow-hidden bg-black relative z-20">
+        <div class="w-full max-w-4xl h-px bg-white/10 relative">
+            <div
+                class="absolute top-1/2 left-0 w-20 h-1 bg-gradient-to-r from-transparent via-neon to-transparent -translate-y-1/2 animate-scan">
+            </div>
+            <div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-black px-4">
+                <svg class="w-12 h-12 text-neon drop-shadow-[0_0_10px_rgba(176,241,39,0.8)]" viewBox="0 0 24 24"
+                    fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" class="animate-pulse-path" />
+                </svg>
+            </div>
+        </div>
+        <style>
+            @keyframes scan {
+                0% {
+                    left: -10%;
+                }
+
+                100% {
+                    left: 110%;
+                }
+            }
+
+            .animate-scan {
+                animation: scan 4s linear infinite;
+            }
+
+            .animate-pulse-path {
+                stroke-dasharray: 100;
+                stroke-dashoffset: 100;
+                animation: dash 2s linear infinite;
+            }
+
+            @keyframes dash {
+                to {
+                    stroke-dashoffset: 0;
+                }
+            }
+        </style>
+    </div>
+
+
+    <section id="expertise" class="py-16 px-6 md:px-10 max-w-[1400px] mx-auto">
+        <div class="flex items-center justify-between mb-12 reveal">
+            <div>
+                <h3 class="hacker-text text-4xl font-bold text-white" data-value="My Expertise">My Expertise</h3>
+                <p class="text-gray-400 text-sm mt-2 max-w-md">
+                    4th-year CSBS student building practical, system-driven software solutions.
+                </p>
+            </div>
+            <div class="hidden md:block w-24 border-t border-gray-600"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+
+            <!-- 1. Full Stack -->
+            <div
+                class="tilt-card bg-card-dark border border-border-dark p-6 xl:p-8 rounded-2xl hover:border-neon transition duration-300 group min-h-[320px] flex flex-col justify-between reveal">
+                <div
+                    class="text-neon border border-gray-700 w-12 h-12 rounded-lg flex items-center justify-center tilt-inner group-hover:bg-neon group-hover:text-black transition-colors">
+                    <i data-lucide="layers" class="w-6 h-6"></i>
+                </div>
+                <div class="tilt-inner mt-4">
+                    <h4 class="text-lg font-bold mb-3 text-white">Full-Stack Development</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Building end-to-end web applications with a backend-first approach, focusing on scalable APIs
+                        and data flow.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 2. AI / ML -->
+            <div
+                class="tilt-card bg-card-dark border border-border-dark p-6 xl:p-8 rounded-2xl hover:border-neon transition duration-300 group min-h-[320px] flex flex-col justify-between reveal delay-100">
+                <div
+                    class="text-neon border border-gray-700 w-12 h-12 rounded-lg flex items-center justify-center tilt-inner group-hover:bg-neon group-hover:text-black transition-colors">
+                    <i data-lucide="brain-circuit" class="w-6 h-6"></i>
+                </div>
+                <div class="tilt-inner mt-4">
+                    <h4 class="text-lg font-bold mb-3 text-white">Applied AI & Machine Learning</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Developing predictive and computer vision models using Python, TensorFlow, and OpenCV.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 3. UI/UX -->
+            <div
+                class="tilt-card bg-card-dark border border-border-dark p-6 xl:p-8 rounded-2xl hover:border-neon transition duration-300 group min-h-[320px] flex flex-col justify-between reveal delay-200">
+                <div
+                    class="text-neon border border-gray-700 w-12 h-12 rounded-lg flex items-center justify-center tilt-inner group-hover:bg-neon group-hover:text-black transition-colors">
+                    <i data-lucide="palette" class="w-6 h-6"></i>
+                </div>
+                <div class="tilt-inner mt-4">
+                    <h4 class="text-lg font-bold mb-3 text-white">UI/UX Design</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Designing intuitive, user-centered interfaces using Figma, with a focus on usability and
+                        clarity.
+                    </p>
+                </div>
+            </div>
+
+            <!-- 4. IoT -->
+            <div
+                class="tilt-card bg-card-dark border border-border-dark p-6 xl:p-8 rounded-2xl hover:border-neon transition duration-300 group min-h-[320px] flex flex-col justify-between reveal delay-300">
+                <div
+                    class="text-neon border border-gray-700 w-12 h-12 rounded-lg flex items-center justify-center tilt-inner group-hover:bg-neon group-hover:text-black transition-colors">
+                    <i data-lucide="microchip" class="w-6 h-6"></i>
+                </div>
+                <div class="tilt-inner mt-4">
+                    <h4 class="text-lg font-bold mb-3 text-white">IoT & Real-Time Systems</h4>
+                    <p class="text-gray-400 text-sm leading-relaxed">
+                        Building sensor-driven, real-time systems using ESP32, microcontrollers, and event-based
+                        communication.
+                    </p>
+                </div>
+            </div>
+
+
+        </div>
+    </section>
+
+
+    <div
+        class="w-full h-4 bg-black flex justify-center items-center overflow-hidden z-20 opacity-50 hover:opacity-100 transition-opacity">
+        <p
+            class="font-mono text-[10px] text-neon leading-none whitespace-nowrap uppercase tracking-widest animate-pulse">
+            0x4F // DECRYPTING_SKILL_SET // 0x9A ... SYSTEM_READY ... 0xFF
+        </p>
+    </div>
+
+    <section id="skills" class="py-24 px-6 md:px-20 max-w-7xl mx-auto">
+
+        <div class="flex items-center justify-between mb-16 reveal">
+            <div>
+                <h3 class="hacker-text text-4xl font-bold text-white" data-value="Technical Skills">Technical Skills
+                </h3>
+                <p class="text-gray-400 text-sm mt-2 max-w-md">My toolbelt for bringing ideas to life.</p>
+            </div>
+            <div class="hidden md:block w-24 border-t border-gray-600"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 mb-20">
+
+            <div class="space-y-10 reveal">
+                <div>
+                    <h4 class="text-xl font-bold text-neon mb-6 flex items-center gap-2">
+                        <i data-lucide="code-2" class="w-5 h-5"></i> Code & Frameworks
+                    </h4>
+                    <div class="flex flex-wrap gap-4">
+                        <div
+                            class="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#1A1A1A] border border-gray-800 hover:border-neon transition duration-300 cursor-default group hover:scale-105">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/html5/html5-original.svg"
+                                alt="HTML5" class="w-6 h-6">
+                            <span class="text-gray-300 font-medium group-hover:text-white transition">HTML5</span>
+                        </div>
+                        <div
+                            class="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#1A1A1A] border border-gray-800 hover:border-neon transition duration-300 cursor-default group hover:scale-105">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/css3/css3-original.svg"
+                                alt="CSS3" class="w-6 h-6">
+                            <span class="text-gray-300 font-medium group-hover:text-white transition">CSS3</span>
+                        </div>
+                        <div
+                            class="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#1A1A1A] border border-gray-800 hover:border-neon transition duration-300 cursor-default group hover:scale-105">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/javascript/javascript-original.svg"
+                                alt="JavaScript" class="w-6 h-6">
+                            <span class="text-gray-300 font-medium group-hover:text-white transition">JavaScript</span>
+                        </div>
+                        <div
+                            class="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#1A1A1A] border border-gray-800 hover:border-neon transition duration-300 cursor-default group hover:scale-105">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/react/react-original.svg"
+                                alt="React" class="w-6 h-6">
+                            <span class="text-gray-300 font-medium group-hover:text-white transition">React.js</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <h4 class="text-xl font-bold text-neon mb-6 flex items-center gap-2">
+                        <i data-lucide="terminal" class="w-5 h-5"></i> Languages
+                    </h4>
+                    <div class="flex flex-wrap gap-4">
+                        <div
+                            class="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#1A1A1A] border border-gray-800 hover:border-neon transition duration-300 cursor-default group hover:scale-105">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/java/java-original.svg"
+                                alt="Java" class="w-6 h-6">
+                            <span class="text-gray-300 font-medium group-hover:text-white transition">Java</span>
+                        </div>
+                        <div
+                            class="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#1A1A1A] border border-gray-800 hover:border-neon transition duration-300 cursor-default group hover:scale-105">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/cplusplus/cplusplus-original.svg"
+                                alt="C++" class="w-6 h-6">
+                            <span class="text-gray-300 font-medium group-hover:text-white transition">C++</span>
+                        </div>
+                        <div
+                            class="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#1A1A1A] border border-gray-800 hover:border-neon transition duration-300 cursor-default group hover:scale-105">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mysql/mysql-original.svg"
+                                alt="SQL" class="w-8 h-8">
+                            <span class="text-gray-300 font-medium group-hover:text-white transition">SQL</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-10 reveal delay-100">
+                <div>
+                    <h4 class="text-xl font-bold text-neon mb-6 flex items-center gap-2">
+                        <i data-lucide="pen-tool" class="w-5 h-5"></i> Tools & Design
+                    </h4>
+                    <div class="flex flex-wrap gap-4">
+
+                        <a href="https://antigravity.google/" target="_blank"
+                            class="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#1A1A1A] border border-gray-800 hover:border-neon transition duration-300 cursor-pointer group hover:scale-105">
+                            <img src="https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://antigravity.google&size=128"
+                                alt="Antigravity" class="w-6 h-6 rounded-sm">
+                            <span class="text-gray-300 font-medium group-hover:text-white transition">Google
+                                Antigravity</span>
+                        </a>
+
+                        <div
+                            class="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#1A1A1A] border border-gray-800 hover:border-neon transition duration-300 cursor-default group hover:scale-105">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/figma/figma-original.svg"
+                                alt="Figma" class="w-6 h-6">
+                            <span class="text-gray-300 font-medium group-hover:text-white transition">Figma</span>
+                        </div>
+                        <div
+                            class="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#1A1A1A] border border-gray-800 hover:border-neon transition duration-300 cursor-default group hover:scale-105">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/github/github-original.svg"
+                                alt="GitHub" class="w-6 h-6 invert">
+                            <span class="text-gray-300 font-medium group-hover:text-white transition">GitHub</span>
+                        </div>
+                        <div
+                            class="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#1A1A1A] border border-gray-800 hover:border-neon transition duration-300 cursor-default group hover:scale-105">
+                            <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/vscode/vscode-original.svg"
+                                alt="VS Code" class="w-6 h-6">
+                            <span class="text-gray-300 font-medium group-hover:text-white transition">VS Code</span>
+                        </div>
+                        <div
+                            class="flex items-center gap-3 px-5 py-3 rounded-xl bg-[#1A1A1A] border border-gray-800 hover:border-neon transition duration-300 cursor-default group hover:scale-105">
+                            <svg class="w-6 h-6 fill-white" viewBox="0 0 1155 1000" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M577.344 0L1154.69 1000H0L577.344 0Z" />
+                            </svg>
+                            <span class="text-gray-300 font-medium group-hover:text-white transition">Vercel</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="p-6 bg-gradient-to-r from-[#121212] to-transparent rounded-xl border-l-4 border-neon mt-8">
+                    <p class="text-gray-400 italic">"Actively practicing Data Structures & Algorithms and competitive
+                        problem solving."</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="reveal delay-200 mt-16">
+            <div class="flex items-center gap-4 mb-8">
+                <div class="w-12 h-12 rounded-full bg-neon/10 flex items-center justify-center border border-neon/20">
+                    <i data-lucide="terminal" class="w-6 h-6 text-neon"></i>
+                </div>
+                <div>
+                    <h3 class="text-3xl font-bold text-white">Problem Solving</h3>
+                    <p class="text-gray-400 text-xs font-mono mt-1 uppercase tracking-widest">Daily Grind & Metrics</p>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+
+                <a href="https://leetcode.com/u/Rajes_2005/" target="_blank"
+                    class="tilt-card group relative bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 hover:bg-[#121212] transition-all duration-300 overflow-hidden">
+                    <div
+                        class="absolute bottom-0 left-0 right-0 h-1 bg-[#FFA116] opacity-50 group-hover:opacity-100 group-hover:h-1.5 transition-all shadow-[0_0_20px_#FFA116]">
+                    </div>
+
+                    <div class="tilt-inner flex justify-between items-start mb-8">
+                        <img src="https://cdn.iconscout.com/icon/free/png-256/free-leetcode-logo-icon-svg-download-png-2944960.png?f=webp"
+                            class="h-8 w-auto opacity-80 group-hover:opacity-100 transition" alt="LeetCode">
+                        <div
+                            class="bg-gray-800 p-2 rounded-full group-hover:bg-[#FFA116] group-hover:text-black transition-colors">
+                            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+
+                    <div class="tilt-inner">
+                        <span class="text-gray-500 text-[10px] font-bold uppercase tracking-wider">Problems
+                            Solved</span>
+                        <div class="flex items-end gap-2 mt-1">
+                            <h4
+                                class="text-4xl font-mono font-bold text-white group-hover:text-[#FFA116] transition-colors">
+                                337+</h4>
+                        </div>
+                    </div>
+
+                    <div class="tilt-inner mt-4 pt-4 border-t border-white/5 flex justify-between items-center">
+                        <span class="text-xs text-gray-400">Max Streak</span>
+                        <span class="text-xs font-mono text-white font-bold">45 Days 🔥</span>
+                    </div>
+                </a>
+
+                <a href="https://www.naukri.com/code360/profile/dexterz" target="_blank"
+                    class="tilt-card group relative bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 hover:bg-[#121212] transition-all duration-300 overflow-hidden">
+                    <div
+                        class="absolute bottom-0 left-0 right-0 h-1 bg-[#F66C35] opacity-50 group-hover:opacity-100 group-hover:h-1.5 transition-all shadow-[0_0_20px_#F66C35]">
+                    </div>
+
+                    <div class="tilt-inner flex justify-between items-start mb-8">
+                        <img src="https://scontent.fixm2-1.fna.fbcdn.net/v/t1.6435-9/102461524_1415239665346527_2627193212096385859_n.jpg?_nc_cat=101&ccb=1-7&_nc_sid=a5f93a&_nc_ohc=tId2O_ZauLEQ7kNvwGAuAGb&_nc_oc=Adny7rojGNdJ0h3b0fQn5r7QgtS_I7-YPn-ZlByRGb3gFHGrCzsIEmi7-B0_Rv3qdJ4&_nc_zt=23&_nc_ht=scontent.fixm2-1.fna&_nc_gid=M6BGgV4gO5Fgt71GN6EFsw&oh=00_AfpccjzGy7msihI8Gllpr4697KE9RC1sztNi5PgvpiDxOg&oe=697F46B0"
+                            class="h-8 w-8 rounded-lg opacity-80 group-hover:opacity-100 transition"
+                            alt="Coding Ninjas">
+                        <div
+                            class="bg-gray-800 p-2 rounded-full group-hover:bg-[#F66C35] group-hover:text-white transition-colors">
+                            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+
+                    <div class="tilt-inner">
+                        <span class="text-gray-500 text-[10px] font-bold uppercase tracking-wider">League Level</span>
+                        <div class="flex items-end gap-2 mt-1">
+                            <h4
+                                class="text-2xl font-mono font-bold text-white group-hover:text-[#F66C35] transition-colors">
+                                Grand Master</h4>
+                        </div>
+                    </div>
+
+                    <div class="tilt-inner mt-4 pt-4 border-t border-white/5 flex justify-between items-center">
+                        <span class="text-xs text-gray-400">Badges Earned</span>
+                        <span class="text-xs font-mono text-white font-bold">12 🎖️</span>
+                    </div>
+                </a>
+
+                <a href="https://www.geeksforgeeks.org/" target="_blank"
+                    class="tilt-card group relative bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 hover:bg-[#121212] transition-all duration-300 overflow-hidden">
+                    <div
+                        class="absolute bottom-0 left-0 right-0 h-1 bg-[#2F8D46] opacity-50 group-hover:opacity-100 group-hover:h-1.5 transition-all shadow-[0_0_20px_#2F8D46]">
+                    </div>
+
+                    <div class="tilt-inner flex justify-between items-start mb-8">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/4/43/GeeksforGeeks.svg"
+                            class="h-8 w-auto opacity-80 group-hover:opacity-100 transition" alt="GFG">
+                        <div
+                            class="bg-gray-800 p-2 rounded-full group-hover:bg-[#2F8D46] group-hover:text-white transition-colors">
+                            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+
+                    <div class="tilt-inner">
+                        <span class="text-gray-500 text-[10px] font-bold uppercase tracking-wider">Coding Score</span>
+                        <div class="flex items-end gap-2 mt-1">
+                            <h4
+                                class="text-4xl font-mono font-bold text-white group-hover:text-[#2F8D46] transition-colors">
+                                850</h4>
+                        </div>
+                    </div>
+
+                    <div class="tilt-inner mt-4 pt-4 border-t border-white/5 flex justify-between items-center">
+                        <span class="text-xs text-gray-400">Institute Rank</span>
+                        <span class="text-xs font-mono text-white font-bold">Top 5 🏆</span>
+                    </div>
+                </a>
+
+                <a href="https://codolio.com/profile/Dexterz" target="_blank"
+                    class="tilt-card group relative bg-[#0A0A0A] border border-white/5 rounded-2xl p-6 hover:bg-[#121212] transition-all duration-300 overflow-hidden">
+                    <div
+                        class="absolute bottom-0 left-0 right-0 h-1 bg-[#4facfe] opacity-50 group-hover:opacity-100 group-hover:h-1.5 transition-all shadow-[0_0_20px_#4facfe]">
+                    </div>
+
+                    <div class="tilt-inner flex justify-between items-start mb-8">
+                        <img src="https://codolio.com/codolio_assets/codolio.svg"
+                            class="h-8 w-auto opacity-80 group-hover:opacity-100 transition" alt="Codolio">
+                        <div
+                            class="bg-gray-800 p-2 rounded-full group-hover:bg-[#4facfe] group-hover:text-white transition-colors">
+                            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+                        </div>
+                    </div>
+
+                    <div class="tilt-inner">
+                        <span class="text-gray-500 text-[10px] font-bold uppercase tracking-wider">Total Problems
+                            Solved</span>
+                        <div class="flex items-end gap-2 mt-1">
+                            <h4
+                                class="text-4xl font-mono font-bold text-white group-hover:text-[#4facfe] transition-colors">
+                                650+</h4>
+                        </div>
+                    </div>
+
+                    <div class="tilt-inner mt-4 pt-4 border-t border-white/5 flex justify-between items-center">
+                        <span class="text-xs text-gray-400">Profile Status</span>
+                        <span class="text-xs font-mono text-green-400 font-bold">Verified ✓</span>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+    </section>
+
+    <div class="w-full h-px bg-white/10 relative z-20 flex justify-center items-center">
+        <div class="absolute w-20 h-10 flex justify-center items-center">
+            <div class="w-full h-px bg-neon animate-[ping_1.5s_cubic-bezier(0,0,0.2,1)_infinite]"></div>
+            <div class="absolute h-4 w-[2px] bg-white animate-[spin_0.2s_linear_infinite] opacity-50"></div>
+        </div>
+    </div>
+
+    <div class="relative w-full max-w-7xl mx-auto py-20 flex items-center justify-center overflow-hidden opacity-60">
+        <div class="absolute inset-0 flex items-center">
+            <div class="w-full h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
+        </div>
+        <div class="relative z-10 bg-black px-4 py-1 border border-white/10 rounded-full flex items-center gap-2">
+            <span class="text-[10px] font-mono text-gray-500 uppercase tracking-widest">Trajectory_Locked</span>
+        </div>
+    </div>
+
+    <section class="py-32 px-6 md:px-12 max-w-[90rem] mx-auto relative overflow-hidden bg-black/20">
+
+        <div class="absolute top-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-neon/20 to-transparent">
+        </div>
+        <div
+            class="absolute bottom-0 left-0 right-0 h-[1px] bg-gradient-to-r from-transparent via-neon/20 to-transparent">
+        </div>
+
+        <div class="absolute top-8 left-8 hidden lg:flex items-center gap-3 opacity-60 pointer-events-none select-none">
+            <div class="p-2 bg-neon/5 border border-neon/10 rounded-lg relative overflow-hidden">
+                <i data-lucide="cpu" class="w-5 h-5 text-neon relative z-10"></i>
+                <div class="absolute inset-0 bg-neon/10 animate-pulse"></div>
+            </div>
+            <div class="flex flex-col font-mono text-[10px] text-neon">
+                <span>SYSTEM_MONITOR: ACTIVE</span>
+                <span class="opacity-70">// TRAJECTORY_PLOTTED</span>
+            </div>
+        </div>
+
+        <div
+            class="absolute top-8 right-8 hidden lg:flex items-center gap-3 opacity-60 pointer-events-none select-none text-right">
+            <div class="flex flex-col font-mono text-[10px] text-neon">
+                <span>TARGET_LOCK: ENGAGED</span>
+                <span class="opacity-70">EST. COMPLETION: CONTINUOUS</span>
+            </div>
+            <div class="relative p-2">
+                <i data-lucide="crosshair" class="w-6 h-6 text-neon animate-[spin_10s_linear_infinite]"></i>
+            </div>
+        </div>
+
+        <div class="absolute bottom-8 left-8 hidden lg:flex flex-col opacity-60 pointer-events-none select-none">
+            <div class="flex items-center gap-2 mb-2">
+                <i data-lucide="activity" class="w-4 h-4 text-neon"></i>
+                <span class="font-mono text-[10px] text-gray-400">LIVE_TELEMETRY</span>
+            </div>
+            <div class="flex gap-[3px] items-end h-6 border-b border-neon/20 pb-1">
+                <div class="w-1 bg-neon/50 animate-[pulse_1s_infinite]" style="height: 40%"></div>
+                <div class="w-1 bg-neon/80 animate-[pulse_1.2s_infinite]" style="height: 70%"></div>
+                <div class="w-1 bg-neon/60 animate-[pulse_0.8s_infinite]" style="height: 50%"></div>
+                <div class="w-1 bg-neon/90 animate-[pulse_1.5s_infinite]" style="height: 90%"></div>
+                <div class="w-1 bg-neon/40 animate-[pulse_1.1s_infinite]" style="height: 30%"></div>
+            </div>
+        </div>
+
+        <div
+            class="absolute bottom-8 right-8 hidden lg:flex items-center gap-3 opacity-60 pointer-events-none select-none text-right">
+            <div class="flex flex-col font-mono text-[10px] text-gray-400">
+                <span class="text-neon">SECURITY_LEVEL: MAX</span>
+                <span>ENCRYPTION: ENABLED</span>
+            </div>
+            <div class="p-2 bg-neon/5 border border-neon/10 rounded-lg">
+                <i data-lucide="shield-check" class="w-6 h-6 text-neon"></i>
+            </div>
+        </div>
+
+        <div class="text-center mb-24 reveal relative z-10">
+            <h2 class="text-5xl md:text-6xl font-black text-white tracking-tighter mb-4">
+                FUTURE <span class="text-neon">ROADMAP</span>
+            </h2>
+            <p class="text-gray-400 text-sm max-w-md mx-auto">
+                <span class="text-neon">></span> Strategic Technical Evolution.
+            </p>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto reveal delay-100 z-10">
+
+            <div id="roadmap-container"
+                class="relative bg-[#080808] border border-white/10 rounded-3xl h-[700px] md:h-[600px] w-full overflow-hidden group/container shadow-[0_0_50px_rgba(0,0,0,0.3)]">
+
+                <div
+                    class="absolute inset-0 bg-[url('https://grainy-gradients.vercel.app/noise.svg')] opacity-5 pointer-events-none">
+                </div>
+                <div
+                    class="absolute inset-0 bg-[linear-gradient(rgba(176,241,39,0.03)_1px,transparent_1px),linear-gradient(90deg,rgba(176,241,39,0.03)_1px,transparent_1px)] bg-[size:40px_40px] pointer-events-none">
+                </div>
+
+                <div
+                    class="absolute top-0 left-0 w-12 h-12 border-t-[3px] border-l-[3px] border-neon rounded-tl-2xl pointer-events-none opacity-50">
+                </div>
+                <div
+                    class="absolute top-0 right-0 w-12 h-12 border-t-[3px] border-r-[3px] border-neon rounded-tr-2xl pointer-events-none opacity-50">
+                </div>
+                <div
+                    class="absolute bottom-0 left-0 w-12 h-12 border-b-[3px] border-l-[3px] border-neon rounded-bl-2xl pointer-events-none opacity-50">
+                </div>
+                <div
+                    class="absolute bottom-0 right-0 w-12 h-12 border-b-[3px] border-r-[3px] border-neon rounded-br-2xl pointer-events-none opacity-50">
+                </div>
+
+                <div
+                    class="absolute top-0 left-0 right-0 p-6 flex justify-between items-center opacity-50 z-20 pointer-events-none">
+                    <span class="text-[10px] font-mono text-white">TIMELINE_STATUS: ACTIVE</span>
+                    <span class="text-[10px] font-mono text-neon">● ON TRACK</span>
+                </div>
+
+
+                <div
+                    class="hidden md:block absolute top-1/2 left-16 right-16 h-1 bg-[#222] rounded-full -translate-y-1/2 z-10 overflow-visible pointer-events-none">
+                    <div
+                        class="absolute top-0 left-0 h-full w-full bg-gradient-to-r from-blue-900 via-neon/30 to-purple-900 opacity-40">
+                    </div>
+
+                    <div id="roadmap-car-glow"
+                        class="absolute top-1/2 -translate-y-1/2 h-16 w-32 blur-[20px] rounded-full transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 z-0 left-0 bg-white/40"
+                        style="will-change: left; transform: translateZ(0);"></div>
+
+                    <div id="roadmap-car-core"
+                        class="absolute top-1/2 -translate-y-1/2 h-1.5 w-16 rounded-full transition-all duration-700 ease-[cubic-bezier(0.4,0,0.2,1)] opacity-0 z-30 shadow-[0_0_15px_white] left-0 bg-white"
+                        style="will-change: left; transform: translateZ(0);"></div>
+                </div>
+
+
+                <div class="hidden md:grid grid-cols-4 h-full w-full px-12 relative z-20">
+
+                    <div id="rd-item-1" class="relative h-full group hover:z-30">
+                        <div
+                            class="absolute bottom-1/2 left-1/2 w-[1px] bg-blue-500/50 -translate-x-1/2 h-[60px] group-hover:bg-blue-400 transition-colors">
+                        </div>
+                        <div
+                            class="absolute bottom-[calc(50%+60px)] left-1/2 w-3 h-3 bg-[#080808] border-2 border-blue-500 rounded-full -translate-x-1/2 translate-y-1/2 shadow-[0_0_10px_#3B82F6] z-20 group-hover:scale-125 transition-transform">
+                        </div>
+
+                        <div
+                            class="absolute bottom-[calc(50%+60px)] left-2 right-2 bg-[#111] border border-blue-500/30 p-5 rounded-xl hover:border-blue-400 hover:-translate-y-2 transition-all duration-300 group-hover:shadow-[0_0_30px_rgba(59,130,246,0.2)]">
+                            <span class="text-[10px] font-bold text-blue-400 mb-2 block tracking-wider">PHASE 1:
+                                BUILD</span>
+                            <h3 class="text-white font-bold text-lg mb-1">Web Development</h3>
+                            <p class="text-xs text-gray-400 font-mono mb-3">Mastering the Stack</p>
+                            <div class="w-full bg-black h-1.5 rounded-full overflow-hidden border border-white/5">
+                                <div class="h-full bg-blue-500 w-[75%]"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="rd-item-2" class="relative h-full group hover:z-30">
+                        <div
+                            class="absolute top-1/2 left-1/2 w-[1px] bg-neon/50 -translate-x-1/2 h-[60px] group-hover:bg-neon transition-colors">
+                        </div>
+                        <div
+                            class="absolute top-[calc(50%+60px)] left-1/2 w-3 h-3 bg-[#080808] border-2 border-neon rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_10px_#B0F127] z-20 group-hover:scale-125 transition-transform">
+                        </div>
+
+                        <div
+                            class="absolute top-[calc(50%+60px)] left-2 right-2 bg-[#111] border border-neon/30 p-5 rounded-xl hover:border-neon hover:translate-y-2 transition-all duration-300 group-hover:shadow-[0_0_30px_rgba(176,241,39,0.2)]">
+                            <span class="text-[10px] font-bold text-neon mb-2 block tracking-wider">PHASE 2:
+                                SCALE</span>
+                            <h3 class="text-white font-bold text-lg mb-1">System Design</h3>
+                            <p class="text-xs text-gray-400 font-mono mb-3">Architecting for Growth</p>
+                            <div class="w-full bg-black h-1.5 rounded-full overflow-hidden border border-white/5">
+                                <div class="h-full bg-neon w-[45%]"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="rd-item-3" class="relative h-full group hover:z-30">
+                        <div
+                            class="absolute bottom-1/2 left-1/2 w-[1px] bg-orange-500/50 -translate-x-1/2 h-[60px] group-hover:bg-orange-400 transition-colors">
+                        </div>
+                        <div
+                            class="absolute bottom-[calc(50%+60px)] left-1/2 w-3 h-3 bg-[#080808] border-2 border-orange-500 rounded-full -translate-x-1/2 translate-y-1/2 shadow-[0_0_10px_#F97316] z-20 group-hover:scale-125 transition-transform">
+                        </div>
+
+                        <div
+                            class="absolute bottom-[calc(50%+60px)] left-2 right-2 bg-[#111] border border-orange-500/30 p-5 rounded-xl hover:border-orange-400 hover:-translate-y-2 transition-all duration-300 group-hover:shadow-[0_0_30px_rgba(249,115,22,0.2)]">
+                            <span class="text-[10px] font-bold text-orange-400 mb-2 block tracking-wider">PHASE 3:
+                                DEPLOY</span>
+                            <h3 class="text-white font-bold text-lg mb-1">Cloud Tech</h3>
+                            <p class="text-xs text-gray-400 font-mono mb-3">AWS & Infrastructure</p>
+                            <div class="w-full bg-black h-1.5 rounded-full overflow-hidden border border-white/5">
+                                <div class="h-full bg-orange-500 w-[25%]"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="rd-item-4" class="relative h-full group hover:z-30">
+                        <div
+                            class="absolute top-1/2 left-1/2 w-[1px] bg-purple-500/50 -translate-x-1/2 h-[60px] group-hover:bg-purple-500 transition-colors">
+                        </div>
+                        <div
+                            class="absolute top-[calc(50%+60px)] left-1/2 w-3 h-3 bg-[#080808] border-2 border-purple-500 rounded-full -translate-x-1/2 -translate-y-1/2 shadow-[0_0_10px_#A855F7] animate-pulse z-20 group-hover:scale-125 transition-transform">
+                        </div>
+
+                        <div
+                            class="absolute top-[calc(50%+60px)] left-2 right-2 bg-[#111] border border-purple-500/30 p-5 rounded-xl hover:border-purple-500 hover:translate-y-2 transition-all duration-300 group-hover:shadow-[0_0_30px_rgba(168,85,247,0.2)]">
+                            <span class="text-[10px] font-bold text-purple-400 mb-2 block tracking-wider">PHASE 4:
+                                EVOLVE</span>
+                            <h3 class="text-white font-bold text-lg mb-1">AI / ML</h3>
+                            <p class="text-xs text-gray-400 font-mono mb-3">Next-Gen Intelligence</p>
+                            <div class="w-full bg-black h-1.5 rounded-full overflow-hidden border border-white/5">
+                                <div class="h-full bg-purple-500 w-[15%]"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="md:hidden flex flex-col justify-center h-full px-6 space-y-4 relative z-20">
+                    <div class="bg-[#111] border border-blue-500/30 p-4 rounded-xl">
+                        <h3 class="text-white font-bold text-sm">Web Development</h3>
+                        <div class="w-full bg-black h-1 mt-2 rounded-full">
+                            <div class="bg-blue-500 h-full w-[75%]"></div>
+                        </div>
+                    </div>
+                    <div class="bg-[#111] border border-neon/30 p-4 rounded-xl">
+                        <h3 class="text-white font-bold text-sm">System Design</h3>
+                        <div class="w-full bg-black h-1 mt-2 rounded-full">
+                            <div class="bg-neon h-full w-[45%]"></div>
+                        </div>
+                    </div>
+                    <div class="bg-[#111] border border-orange-500/30 p-4 rounded-xl">
+                        <h3 class="text-white font-bold text-sm">Cloud Tech</h3>
+                        <div class="w-full bg-black h-1 mt-2 rounded-full">
+                            <div class="bg-orange-500 h-full w-[25%]"></div>
+                        </div>
+                    </div>
+                    <div class="bg-[#111] border border-purple-500/30 p-4 rounded-xl">
+                        <h3 class="text-white font-bold text-sm">AI / ML</h3>
+                        <div class="w-full bg-black h-1 mt-2 rounded-full">
+                            <div class="bg-purple-500 h-full w-[15%]"></div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <style>
+            /* Default State */
+            #roadmap-car-glow,
+            #roadmap-car-core {
+                left: 0%;
+                opacity: 0;
+            }
+
+            /* HOVER STATE 1: WEB DEV */
+            #roadmap-container.hover-1 #roadmap-car-glow {
+                left: 12.5%;
+                opacity: 1;
+                background-color: #3B82F6;
+            }
+
+            #roadmap-container.hover-1 #roadmap-car-core {
+                left: 12.5%;
+                opacity: 1;
+                background-color: #60A5FA;
+                box-shadow: 0 0 20px #3B82F6;
+            }
+
+            /* HOVER STATE 2: SYS DESIGN */
+            #roadmap-container.hover-2 #roadmap-car-glow {
+                left: 37.5%;
+                opacity: 1;
+                background-color: #B0F127;
+            }
+
+            #roadmap-container.hover-2 #roadmap-car-core {
+                left: 37.5%;
+                opacity: 1;
+                background-color: #D4FF7F;
+                box-shadow: 0 0 20px #B0F127;
+            }
+
+            /* HOVER STATE 3: CLOUD */
+            #roadmap-container.hover-3 #roadmap-car-glow {
+                left: 62.5%;
+                opacity: 1;
+                background-color: #F97316;
+            }
+
+            #roadmap-container.hover-3 #roadmap-car-core {
+                left: 62.5%;
+                opacity: 1;
+                background-color: #FB923C;
+                box-shadow: 0 0 20px #F97316;
+            }
+
+            /* HOVER STATE 4: AI/ML */
+            #roadmap-container.hover-4 #roadmap-car-glow {
+                left: 87.5%;
+                opacity: 1;
+                background-color: #A855F7;
+            }
+
+            #roadmap-container.hover-4 #roadmap-car-core {
+                left: 87.5%;
+                opacity: 1;
+                background-color: #C084FC;
+                box-shadow: 0 0 20px #A855F7;
+            }
+        </style>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const container = document.getElementById('roadmap-container');
+                const items = [
+                    document.getElementById('rd-item-1'),
+                    document.getElementById('rd-item-2'),
+                    document.getElementById('rd-item-3'),
+                    document.getElementById('rd-item-4')
+                ];
+
+                items.forEach((item, index) => {
+                    if (!item) return;
+                    item.addEventListener('mouseenter', () => {
+                        container.classList.remove('hover-1', 'hover-2', 'hover-3', 'hover-4');
+                        container.classList.add(`hover-${index + 1}`);
+                    });
+                });
+
+                container.addEventListener('mouseleave', () => {
+                    container.classList.remove('hover-1', 'hover-2', 'hover-3', 'hover-4');
+                });
+            });
+        </script>
+    </section>
+
+
+
+    <section class="py-20 px-6 md:px-20 max-w-7xl mx-auto">
+        <div class="flex items-center justify-between mb-16 reveal">
+            <h3 class="hacker-text text-4xl font-bold" data-value="Take a look at my past experience.">Take a look at
+                my<br>past <span class="text-neon">experience.</span></h3>
+            <div class="hidden md:block w-24 border-t border-gray-600"></div>
+        </div>
+
+        <div class="relative">
+            <div
+                class="absolute left-1/2 top-4 bottom-4 w-0 border-l border-dashed border-gray-600 hidden md:block transform -translate-x-1/2">
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center w-full mb-16 relative reveal delay-100">
+                <div class="md:w-1/2 md:pr-12 md:text-right w-full mb-4 md:mb-0">
+                    <h4 class="text-xl font-bold text-white flex items-center md:justify-end gap-2"><span
+                            class="text-neon">*</span> UI/UX Designer (Intern)</h4>
+                    <p class="text-gray-400 text-sm mt-2 leading-relaxed">Created user-friendly interfaces, conducted
+                        usability testing, and collaborated with developers.</p>
+                </div>
+                <div
+                    class="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 rounded-full bg-neon shadow-[0_0_10px_#B0F127] hidden md:block z-10">
+                </div>
+                <div class="md:w-1/2 md:pl-12 w-full">
+                    <h5 class="text-white font-bold text-lg">Encryptix Technologies, Delhi</h5>
+                    <p class="text-gray-500 text-sm">Jun 2024 - Jul 2024</p>
+                </div>
+            </div>
+
+            <div class="flex flex-col md:flex-row justify-between items-center w-full relative reveal delay-200">
+                <div class="md:w-1/2 md:pr-12 md:text-right w-full mb-4 md:mb-0">
+                    <h4 class="text-xl font-bold text-white flex items-center md:justify-end gap-2"><span
+                            class="text-neon">*</span> Web Developer (Intern)</h4>
+                    <p class="text-gray-400 text-sm mt-2 leading-relaxed">Worked on improving website speed, reducing
+                        load times, and integrating APIs.</p>
+                </div>
+                <div
+                    class="absolute left-1/2 transform -translate-x-1/2 w-5 h-5 rounded-full bg-black border-2 border-white hidden md:block z-10">
+                </div>
+                <div class="md:w-1/2 md:pl-12 w-full">
+                    <h5 class="text-white font-bold text-lg">Prodigy Infotech, Coimbatore</h5>
+                    <p class="text-gray-500 text-sm">Jul 2024 - Aug 2024</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="bg-neon py-6 w-full relative overflow-hidden mt-12 border-y border-black/10">
+
+        <style>
+            /* Custom Animation Keyframes */
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(20px);
+                }
+
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+
+            .animate-card {
+                opacity: 0;
+                /* Hidden initially */
+                animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+            }
+
+            .delay-100 {
+                animation-delay: 0.1s;
+            }
+
+            .delay-200 {
+                animation-delay: 0.3s;
+            }
+
+            .delay-300 {
+                animation-delay: 0.5s;
+            }
+        </style>
+
+        <div id="stats-container"
+            class="max-w-5xl mx-auto px-4 grid grid-cols-1 md:grid-cols-3 gap-4 text-center text-black relative z-10">
+
+            <div
+                class="animate-card delay-100 group p-3 rounded-xl hover:bg-white/40 transition-all duration-300 cursor-default hover:shadow-[0_10px_20px_rgba(0,0,0,0.1)] hover:-translate-y-2">
+                <h3
+                    class="text-4xl md:text-5xl font-black tracking-tighter leading-none flex justify-center items-center gap-1">
+                    <span class="counter" data-target="6">0</span>
+                    <span class="text-2xl animate-pulse text-black/50 group-hover:text-black">+</span>
+                </h3>
+                <p
+                    class="text-[10px] md:text-xs font-bold uppercase tracking-widest opacity-60 group-hover:opacity-100 transition-opacity mt-1 group-hover:tracking-[0.2em] duration-300">
+                    Months Exp.
+                </p>
+            </div>
+
+            <div
+                class="animate-card delay-200 group p-3 rounded-xl hover:bg-white/40 transition-all duration-300 cursor-default hover:shadow-[0_10px_20px_rgba(0,0,0,0.1)] hover:-translate-y-2">
+                <h3
+                    class="text-4xl md:text-5xl font-black tracking-tighter leading-none flex justify-center items-center gap-1">
+                    <span class="counter" data-target="37">0</span>
+                    <span class="text-2xl animate-pulse text-black/50 group-hover:text-black">+</span>
+                </h3>
+                <p
+                    class="text-[10px] md:text-xs font-bold uppercase tracking-widest opacity-60 group-hover:opacity-100 transition-opacity mt-1 group-hover:tracking-[0.2em] duration-300">
+                    Projects Done
+                </p>
+            </div>
+
+            <div
+                class="animate-card delay-300 group p-3 rounded-xl hover:bg-white/40 transition-all duration-300 cursor-default hover:shadow-[0_10px_20px_rgba(0,0,0,0.1)] hover:-translate-y-2">
+                <h3
+                    class="text-4xl md:text-5xl font-black tracking-tighter leading-none flex justify-center items-center gap-1">
+                    <span class="counter" data-target="310">0</span>
+                    <span class="text-2xl animate-pulse text-black/50 group-hover:text-black">+</span>
+                </h3>
+                <p
+                    class="text-[10px] md:text-xs font-bold uppercase tracking-widest opacity-60 group-hover:opacity-100 transition-opacity mt-1 group-hover:tracking-[0.2em] duration-300">
+                    Problems Solved
+                </p>
+            </div>
+
+        </div>
+
+        <script>
+            document.addEventListener("DOMContentLoaded", () => {
+                const counters = document.querySelectorAll('.counter');
+                const cards = document.querySelectorAll('.animate-card');
+                const speed = 100; // Faster animation speed
+
+                const animateCounters = () => {
+                    counters.forEach(counter => {
+                        const updateCount = () => {
+                            const target = +counter.getAttribute('data-target');
+                            const count = +counter.innerText;
+                            // Dynamic increment calculation for smooth easing
+                            const inc = Math.max(1, (target - count) / 10);
+
+                            if (count < target) {
+                                counter.innerText = Math.ceil(count + inc);
+                                setTimeout(updateCount, 30);
+                            } else {
+                                counter.innerText = target;
+                            }
+                        };
+                        updateCount();
+                    });
+                };
+
+                const observer = new IntersectionObserver((entries) => {
+                    if (entries[0].isIntersecting) {
+                        // 1. Start Number Count
+                        animateCounters();
+
+                        // 2. Trigger Entrance Animations (re-trigger to ensure they play)
+                        cards.forEach(card => {
+                            card.style.animationPlayState = 'running';
+                        });
+
+                        observer.disconnect();
+                    }
+                });
+
+                observer.observe(document.querySelector('.bg-neon'));
+            });
+        </script>
+    </section>
+
+    <section id="projects" class="py-24 px-6 md:px-20 max-w-7xl mx-auto">
+
+        <div class="text-center mb-16 reveal">
+            <div class="inline-flex items-center justify-center relative">
+                <h2 class="hacker-text text-neon text-6xl font-black mb-4 tracking-tighter relative z-10"
+                    data-value="selected works.">selected works.</h2>
+                <h2 class="absolute text-7xl font-black text-outline opacity-20 top-2 -z-0">PROJECTS</h2>
+            </div>
+            <p class="text-gray-400">A mix of development logic and design precision.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+
+            <div
+                class="tilt-card group bg-[#121212] rounded-2xl overflow-hidden border border-gray-800 relative hover:border-neon hover:shadow-[0_0_20px_rgba(176,241,39,0.15)] hover:-translate-y-2 transition-all duration-300 reveal">
+                <div
+                    class="absolute top-4 right-4 z-20 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider shadow-lg">
+                    IoT
+                </div>
+
+                <div class="overflow-hidden h-56 w-full relative">
+                    <img src="HTML/Elephant.png"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500"
+                        alt="BeeWay Elephant Detection">
+                </div>
+
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-white mb-2 tilt-inner">BeeWay</h3>
+                    <p class="text-gray-400 text-sm mb-4 h-10 line-clamp-2 tilt-inner">Elephant Detection & Forest
+                        Surveillance System using IoT.</p>
+
+                    <div class="flex flex-wrap gap-2 mb-6 tilt-inner">
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-neon font-medium uppercase tracking-wide">C++</span>
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-neon font-medium uppercase tracking-wide">ESP32</span>
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-neon font-medium uppercase tracking-wide">IoT</span>
+                    </div>
+
+                    <a href="https://github.com/rajeswars/Beeway" target="_blank"
+                        class="tilt-inner inline-flex items-center gap-2 text-white border border-gray-600 px-4 py-2 rounded-lg text-xs font-bold hover:bg-neon hover:text-black hover:border-neon transition w-full justify-center">
+                        <i data-lucide="github" class="w-3 h-3"></i> View Code
+                    </a>
+                </div>
+            </div>
+
+            <div
+                class="tilt-card group bg-[#121212] rounded-2xl overflow-hidden border border-gray-800 relative hover:border-neon hover:shadow-[0_0_20px_rgba(176,241,39,0.15)] hover:-translate-y-2 transition-all duration-300 reveal delay-100">
+                <div
+                    class="absolute top-4 right-4 z-20 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider shadow-lg">
+                    MarTech
+                </div>
+
+                <div class="overflow-hidden h-56 w-full relative">
+                    <img src="HTML/Insta.png"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500"
+                        alt="SociaLens Analytics">
+                </div>
+
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-white mb-2 tilt-inner">SociaLens</h3>
+                    <p class="text-gray-400 text-sm mb-4 h-10 line-clamp-2 tilt-inner">Instagram Influencer Analytics
+                        Platform for data-driven insights.</p>
+
+                    <div class="flex flex-wrap gap-2 mb-6 tilt-inner">
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-neon font-medium uppercase tracking-wide">Python</span>
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-neon font-medium uppercase tracking-wide">Flask</span>
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-neon font-medium uppercase tracking-wide">MongoDB</span>
+                    </div>
+
+                    <a href="https://github.com/rajeswars/SociaLens-Instagram-Influencer-Analytics-Platform"
+                        target="_blank"
+                        class="tilt-inner inline-flex items-center gap-2 text-white border border-gray-600 px-4 py-2 rounded-lg text-xs font-bold hover:bg-neon hover:text-black hover:border-neon transition w-full justify-center">
+                        <i data-lucide="github" class="w-3 h-3"></i> View Code
+                    </a>
+                </div>
+            </div>
+
+            <div
+                class="tilt-card group bg-[#121212] rounded-2xl overflow-hidden border border-gray-800 relative hover:border-neon hover:shadow-[0_0_20px_rgba(176,241,39,0.15)] hover:-translate-y-2 transition-all duration-300 reveal delay-200">
+                <div
+                    class="absolute top-4 right-4 z-20 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider shadow-lg">
+                    AI / ML
+                </div>
+
+                <div class="overflow-hidden h-56 w-full relative">
+                    <img src="HTML/ISL.png"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500"
+                        alt="ISL Hand Gestures">
+                </div>
+
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-white mb-2 tilt-inner">ISL Detection</h3>
+                    <p class="text-gray-400 text-sm mb-4 h-10 line-clamp-2 tilt-inner">Indian Sign Language to
+                        Text/Audio Converter using Deep Learning.</p>
+
+                    <div class="flex flex-wrap gap-2 mb-6 tilt-inner">
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-neon font-medium uppercase tracking-wide">Python</span>
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-neon font-medium uppercase tracking-wide">OpenCV</span>
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-neon font-medium uppercase tracking-wide">TensorFlow</span>
+                    </div>
+
+                    <a href="https://github.com/rajeswars/Indian_Sign_Language" target="_blank"
+                        class="tilt-inner inline-flex items-center gap-2 text-white border border-gray-600 px-4 py-2 rounded-lg text-xs font-bold hover:bg-neon hover:text-black hover:border-neon transition w-full justify-center">
+                        <i data-lucide="github" class="w-3 h-3"></i> View Code
+                    </a>
+                </div>
+            </div>
+
+            <div
+                class="tilt-card group bg-[#121212] rounded-2xl overflow-hidden border border-gray-800 relative hover:border-neon hover:shadow-[0_0_20px_rgba(176,241,39,0.15)] hover:-translate-y-2 transition-all duration-300 reveal">
+                <div
+                    class="absolute top-4 right-4 z-20 bg-black/60 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider shadow-lg">
+                    HealthTech AI
+                </div>
+
+                <div class="overflow-hidden h-56 w-full relative">
+                    <img src="HTML/MaternAi.png"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500"
+                        alt="MaternAI Medical Data">
+                </div>
+
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-white mb-2 tilt-inner">MaternAI</h3>
+                    <p class="text-gray-400 text-sm mb-4 h-10 line-clamp-2 tilt-inner">Pregnancy Risk Prediction &
+                        Health Monitoring System.</p>
+
+                    <div class="flex flex-wrap gap-2 mb-6 tilt-inner">
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-neon font-medium uppercase tracking-wide">ML/AI</span>
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-neon font-medium uppercase tracking-wide">Python</span>
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-neon font-medium uppercase tracking-wide">HealthTech</span>
+                    </div>
+
+                    <a href="#"
+                        class="tilt-inner inline-flex items-center gap-2 text-white border border-gray-600 px-4 py-2 rounded-lg text-xs font-bold hover:bg-neon hover:text-black hover:border-neon transition w-full justify-center">
+                        <i data-lucide="github" class="w-3 h-3"></i> View Code
+                    </a>
+                </div>
+            </div>
+
+            <div
+                class="tilt-card group bg-[#121212] rounded-2xl overflow-hidden border border-gray-800 relative hover:border-neon hover:shadow-[0_0_20px_rgba(176,241,39,0.15)] hover:-translate-y-2 transition-all duration-300 reveal delay-100">
+                <div
+                    class="absolute top-4 right-4 z-20 bg-purple-500/80 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider shadow-lg">
+                    UI Design
+                </div>
+
+                <div class="overflow-hidden h-56 w-full relative">
+                    <img src="HTML/Car.png"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500"
+                        alt="Luxury Car UI">
+                </div>
+
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-white mb-2 tilt-inner">Car Rental Platform</h3>
+                    <p class="text-gray-400 text-sm mb-4 h-10 line-clamp-2 tilt-inner">High-Performance Landing Page UI
+                        Design with immersive visuals.</p>
+
+                    <div class="flex flex-wrap gap-2 mb-6 tilt-inner">
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-white font-medium bg-purple-500/10 border-purple-500/30 uppercase tracking-wide">Figma</span>
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-white font-medium bg-purple-500/10 border-purple-500/30 uppercase tracking-wide">UI
+                            Design</span>
+                    </div>
+
+                    <a href="https://www.figma.com/design/oZKVGG9onuPYZ95NMF3NXp/Car-Rental-App?node-id=113-7674&t=XhHbEfxXrggovtia-1"
+                        class="tilt-inner inline-flex items-center gap-2 text-white border border-gray-600 px-4 py-2 rounded-lg text-xs font-bold hover:bg-white hover:text-black transition w-full justify-center">
+                        <i data-lucide="figma" class="w-3 h-3"></i> View Design
+                    </a>
+                </div>
+            </div>
+
+            <div
+                class="tilt-card group bg-[#121212] rounded-2xl overflow-hidden border border-gray-800 relative hover:border-neon hover:shadow-[0_0_20px_rgba(176,241,39,0.15)] hover:-translate-y-2 transition-all duration-300 reveal delay-200">
+                <div
+                    class="absolute top-4 right-4 z-20 bg-purple-500/80 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[10px] font-bold text-white uppercase tracking-wider shadow-lg">
+                    UX / UI
+                </div>
+
+                <div class="overflow-hidden h-56 w-full relative">
+                    <img src="https://images.unsplash.com/photo-1541625602330-2277a4c46182?q=80&w=2670&auto=format&fit=crop"
+                        class="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition duration-500"
+                        alt="PedalPro Cycling">
+                </div>
+
+                <div class="p-6">
+                    <h3 class="text-xl font-bold text-white mb-2 tilt-inner">PedalPro - One Stop Bicycle Shop</h3>
+                    <p class="text-gray-400 text-sm mb-4 h-10 line-clamp-2 tilt-inner">Modern Streaming Platform
+                        Interface focusing on User Experience.</p>
+
+                    <div class="flex flex-wrap gap-2 mb-6 tilt-inner">
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-white font-medium bg-purple-500/10 border-purple-500/30 uppercase tracking-wide">Figma</span>
+                        <span
+                            class="px-2 py-1 rounded bg-[#1A1A1A] border border-gray-700 text-[10px] text-white font-medium bg-purple-500/10 border-purple-500/30 uppercase tracking-wide">UX
+                            Research</span>
+                    </div>
+
+                    <a href="https://www.figma.com/design/7RoZ0zcfikIbZ3JB96LAk8/PedalPro-Website?node-id=0-422&t=xcO9B4newSt0U19D-1"
+                        class="tilt-inner inline-flex items-center gap-2 text-white border border-gray-600 px-4 py-2 rounded-lg text-xs font-bold hover:bg-white hover:text-black transition w-full justify-center">
+                        <i data-lucide="figma" class="w-3 h-3"></i> View Design
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+
+
+    <section id="certifications" class="py-24 px-6 md:px-20 max-w-7xl mx-auto">
+
+        <div class="flex items-center justify-between mb-16 reveal">
+            <div>
+                <h3 class="hacker-text text-4xl font-bold text-white" data-value="Certifications">Certifications</h3>
+                <p class="text-gray-400 text-sm mt-2 max-w-md">
+                    Industry-recognized certifications validating cloud, AI, and full-stack expertise.
+                </p>
+            </div>
+            <div class="hidden md:block w-24 border-t border-gray-600"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+            <div
+                class="tilt-card group relative bg-[#121212] border border-gray-800 p-6 rounded-2xl hover:border-neon transition duration-300 reveal hover-trigger overflow-hidden">
+                <div
+                    class="absolute -right-10 -top-10 w-32 h-32 bg-neon/5 rounded-full blur-3xl group-hover:bg-neon/10 transition">
+                </div>
+                <div class="flex justify-between items-start mb-6 relative z-10">
+                    <div
+                        class="h-12 w-20 px-2 bg-white rounded-lg flex items-center justify-center border border-white/10 group-hover:border-neon/50 transition shadow-sm">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/9/93/Amazon_Web_Services_Logo.svg"
+                            alt="AWS" class="h-8 w-full object-contain">
+                    </div>
+                    <div
+                        class="px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full flex items-center gap-2">
+                        <div class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+                        <span class="text-[10px] font-bold text-green-400 uppercase tracking-wider">Active</span>
+                    </div>
+                </div>
+                <div class="relative z-10">
+                    <h4 class="text-lg font-bold text-white mb-1 group-hover:text-orange-400 transition-colors">AWS
+                        Certified Cloud Practitioner</h4>
+                    <p class="text-xs text-gray-500 font-mono uppercase tracking-wide mb-4">Amazon Web Services</p>
+                    <div class="flex items-center gap-3 text-xs text-gray-400 border-t border-white/5 pt-4">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                        <span>Exp: Feb 2028</span>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="tilt-card group relative bg-[#121212] border border-gray-800 p-6 rounded-2xl hover:border-neon transition duration-300 reveal delay-100 hover-trigger overflow-hidden">
+                <div
+                    class="absolute -right-10 -top-10 w-32 h-32 bg-red-500/5 rounded-full blur-3xl group-hover:bg-red-500/10 transition">
+                </div>
+                <div class="flex justify-between items-start mb-6 relative z-10">
+                    <div
+                        class="h-12 w-20 px-2 bg-white rounded-lg flex items-center justify-center border border-white/10 group-hover:border-red-500/50 transition shadow-sm">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" alt="Oracle"
+                            class="h-4 w-full object-contain">
+                    </div>
+                    <div
+                        class="px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full flex items-center gap-2">
+                        <div class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+                        <span class="text-[10px] font-bold text-green-400 uppercase tracking-wider">Active</span>
+                    </div>
+                </div>
+                <div class="relative z-10">
+                    <h4 class="text-lg font-bold text-white mb-1 group-hover:text-red-400 transition-colors">Oracle AI
+                        Vector Search Professional</h4>
+                    <p class="text-xs text-gray-500 font-mono uppercase tracking-wide mb-4">Oracle</p>
+                    <div class="flex items-center gap-3 text-xs text-gray-400 border-t border-white/5 pt-4">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                        <span>Exp: Oct 2027</span>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="tilt-card group relative bg-[#121212] border border-gray-800 p-6 rounded-2xl hover:border-neon transition duration-300 reveal delay-200 hover-trigger overflow-hidden">
+                <div
+                    class="absolute -right-10 -top-10 w-32 h-32 bg-red-500/5 rounded-full blur-3xl group-hover:bg-red-500/10 transition">
+                </div>
+                <div class="flex justify-between items-start mb-6 relative z-10">
+                    <div
+                        class="h-12 w-20 px-2 bg-white rounded-lg flex items-center justify-center border border-white/10 group-hover:border-red-500/50 transition shadow-sm">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/5/50/Oracle_logo.svg" alt="Oracle"
+                            class="h-4 w-full object-contain">
+                    </div>
+                    <div
+                        class="px-3 py-1 bg-green-500/10 border border-green-500/20 rounded-full flex items-center gap-2">
+                        <div class="w-1.5 h-1.5 bg-green-500 rounded-full animate-pulse"></div>
+                        <span class="text-[10px] font-bold text-green-400 uppercase tracking-wider">Active</span>
+                    </div>
+                </div>
+                <div class="relative z-10">
+                    <h4 class="text-lg font-bold text-white mb-1 group-hover:text-red-400 transition-colors">OCI 2025
+                        Foundations Associate</h4>
+                    <p class="text-xs text-gray-500 font-mono uppercase tracking-wide mb-4">Oracle Cloud</p>
+                    <div class="flex items-center gap-3 text-xs text-gray-400 border-t border-white/5 pt-4">
+                        <i data-lucide="calendar" class="w-3.5 h-3.5"></i>
+                        <span>Exp: Nov 2027</span>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="tilt-card group relative bg-[#121212] border border-gray-800 p-6 rounded-2xl hover:border-[rgb(54,35,88)] transition duration-300 reveal delay-300 hover-trigger overflow-hidden">
+                <div
+                    class="absolute -right-10 -top-10 w-32 h-32 bg-[rgb(54,35,88)] rounded-full blur-3xl opacity-10 group-hover:opacity-30 transition">
+                </div>
+
+                <div class="flex justify-between items-start mb-6 relative z-10">
+                    <div
+                        class="h-12 w-20 px-2 bg-white rounded-lg flex items-center justify-center border border-white/10 group-hover:border-[rgb(54,35,88)] transition shadow-sm">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/a/a0/Wipro_Primary_Logo_Color_RGB.svg"
+                            alt="Wipro" class="h-10 w-full object-contain">
+                    </div>
+
+                    <div class="px-3 py-1 bg-gray-800 border border-gray-700 rounded-full flex items-center gap-2">
+                        <div class="w-1.5 h-1.5 bg-purple-400 rounded-full"></div>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Completed</span>
+                    </div>
+                </div>
+
+                <div class="relative z-10">
+                    <h4 class="text-lg font-bold text-white mb-1 group-hover:text-purple-300 transition-colors">Java
+                        Full Stack</h4>
+                    <p class="text-xs text-gray-500 font-mono uppercase tracking-wide mb-4">Wipro TalentNext</p>
+                    <div class="flex items-center gap-3 text-xs text-gray-400 border-t border-white/5 pt-4">
+                        <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                        <span>Issued: Oct 2025</span>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="tilt-card group relative bg-[#121212] border border-gray-800 p-6 rounded-2xl hover:border-neon transition duration-300 reveal delay-300 hover-trigger overflow-hidden">
+                <div
+                    class="absolute -right-10 -top-10 w-32 h-32 bg-blue-500/5 rounded-full blur-3xl group-hover:bg-blue-500/10 transition">
+                </div>
+                <div class="flex justify-between items-start mb-6 relative z-10">
+                    <div
+                        class="h-12 w-24 px-2 bg-white rounded-lg flex items-center justify-center border border-white/10 group-hover:border-blue-500/50 transition shadow-sm">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Skillsoft-logo-navy-RGB_.png/1200px-Skillsoft-logo-navy-RGB_.png"
+                            alt="Skillsoft" class="h-5 w-full object-contain">
+                    </div>
+                    <div class="px-3 py-1 bg-gray-800 border border-gray-700 rounded-full flex items-center gap-2">
+                        <div class="w-1.5 h-1.5 bg-gray-400 rounded-full"></div>
+                        <span class="text-[10px] font-bold text-gray-400 uppercase tracking-wider">Issued</span>
+                    </div>
+                </div>
+                <div class="relative z-10">
+                    <h4 class="text-lg font-bold text-white mb-1 group-hover:text-blue-400 transition-colors">Getting
+                        Started with DevOps</h4>
+                    <p class="text-xs text-gray-500 font-mono uppercase tracking-wide mb-4">Skillsoft</p>
+                    <div class="flex items-center gap-3 text-xs text-gray-400 border-t border-white/5 pt-4">
+                        <i data-lucide="check-circle" class="w-3.5 h-3.5"></i>
+                        <span>Issued: Aug 2024</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="w-full h-32 bg-black overflow-hidden relative z-20 flex items-end border-b border-white/5">
+
+        <div class="absolute inset-0 w-full h-full opacity-20">
+            <div class="absolute top-1/2 left-0 w-20 h-[1px] bg-white animate-wind"
+                style="animation-duration: 0.5s; top: 30%"></div>
+            <div class="absolute top-1/2 left-0 w-32 h-[1px] bg-white animate-wind"
+                style="animation-duration: 0.7s; top: 60%"></div>
+            <div class="absolute top-1/2 left-0 w-10 h-[1px] bg-white animate-wind"
+                style="animation-duration: 0.3s; top: 80%"></div>
+        </div>
+
+        <div class="absolute bottom-4 left-[-200px] flex items-center gap-1 animate-drive-fast">
+
+            <div class="w-64 h-2 bg-gradient-to-r from-transparent via-neon/80 to-neon blur-[3px] rounded-l-full mt-4">
+            </div>
+
+            <div class="relative w-24 h-12 text-neon drop-shadow-[0_0_15px_#B0F127]">
+                <svg viewBox="0 0 100 50" class="w-full h-full fill-current" preserveAspectRatio="none">
+                    <path d="M10,35 L90,35 L95,25 L70,10 L30,10 L5,25 Z" />
+                    <rect x="35" y="12" width="30" height="10" class="fill-black/50" />
+                </svg>
+
+                <div
+                    class="absolute bottom-0 left-2 w-7 h-7 bg-black border-2 border-white rounded-full flex justify-center items-center animate-spin-fast">
+                    <div class="w-full h-[2px] bg-neon"></div>
+                    <div class="h-full w-[2px] bg-neon"></div>
+                </div>
+
+                <div
+                    class="absolute bottom-0 right-2 w-7 h-7 bg-black border-2 border-white rounded-full flex justify-center items-center animate-spin-fast">
+                    <div class="w-full h-[2px] bg-neon"></div>
+                    <div class="h-full w-[2px] bg-neon"></div>
+                </div>
+            </div>
+
+            <div class="absolute -left-4 bottom-2 w-2 h-2 bg-white rounded-full animate-ping"></div>
+
+        </div>
+
+        <style>
+            /* Drive Across Screen */
+            @keyframes drive-fast {
+                0% {
+                    left: -300px;
+                    transform: skewX(10deg);
+                }
+
+                100% {
+                    left: 110%;
+                    transform: skewX(-5deg);
+                }
+            }
+
+            .animate-drive-fast {
+                animation: drive-fast 4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+            }
+
+            /* Wheel Spin */
+            @keyframes spin-fast {
+                0% {
+                    transform: rotate(0deg);
+                }
+
+                100% {
+                    transform: rotate(360deg);
+                }
+            }
+
+            .animate-spin-fast {
+                animation: spin-fast 0.5s linear infinite;
+            }
+
+            /* Background Wind Lines */
+            @keyframes wind {
+                0% {
+                    left: -10%;
+                    opacity: 0;
+                }
+
+                50% {
+                    opacity: 1;
+                }
+
+                100% {
+                    left: 110%;
+                    opacity: 0;
+                }
+            }
+
+            .animate-wind {
+                animation: wind linear infinite;
+            }
+        </style>
+    </div>
+
+    <section id="contact" class="py-24 px-6 md:px-20 max-w-7xl mx-auto reveal">
+
+        <div class="grid grid-cols-1 lg:grid-cols-5 gap-16 items-start">
+
+            <div class="lg:col-span-2 space-y-10">
+                <div>
+                    <h2 class="text-6xl font-bold text-white mb-6">Get in Touch</h2>
+                    <p class="text-gray-400 text-lg leading-relaxed">
+                        If you are interested in my work or want to provide feedback about this website, I am open to
+                        exchanging ideas.
+                    </p>
+                </div>
+
+                <div class="space-y-6">
+                    <div
+                        class="bg-[#121212] border border-gray-800 p-6 rounded-2xl flex items-center gap-5 hover:border-neon transition duration-300 group">
+                        <div
+                            class="bg-[#1A1A1A] p-3 rounded-full text-neon group-hover:bg-neon group-hover:text-black transition">
+                            <i data-lucide="mail" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Chat with me</p>
+                            <a href="mailto:rajesswarss@gmail.com"
+                                class="text-white font-medium hover:text-neon transition">rajesswarss@gmail.com</a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-[#121212] border border-gray-800 p-6 rounded-2xl flex items-center gap-5 hover:border-neon transition duration-300 group">
+                        <div
+                            class="bg-[#1A1A1A] p-3 rounded-full text-neon group-hover:bg-neon group-hover:text-black transition">
+                            <i data-lucide="phone" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Call me</p>
+                            <a href="tel:+919443154592" class="text-white font-medium hover:text-neon transition">+91
+                                9443154592</a>
+                        </div>
+                    </div>
+
+                    <div
+                        class="bg-[#121212] border border-gray-800 p-6 rounded-2xl flex items-center gap-5 hover:border-neon transition duration-300 group">
+                        <div
+                            class="bg-[#1A1A1A] p-3 rounded-full text-neon group-hover:bg-neon group-hover:text-black transition">
+                            <i data-lucide="map-pin" class="w-6 h-6"></i>
+                        </div>
+                        <div>
+                            <p class="text-xs text-gray-500 uppercase tracking-wider font-bold mb-1">Location</p>
+                            <p class="text-white font-medium">Coimbatore, TamilNadu</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div
+                class="lg:col-span-3 bg-[#121212] border border-gray-800 rounded-3xl p-8 md:p-12 hover:border-gray-700 transition duration-500">
+                <form class="space-y-12" onsubmit="sendEmail(event)">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div class="group relative">
+                            <label class="text-gray-500 text-xs font-bold mb-3 block uppercase tracking-wide">Full
+                                name</label>
+                            <input type="text"
+                                class="w-full bg-transparent border-b border-gray-800 py-3 focus:outline-none focus:border-neon text-white transition-colors duration-300 text-lg placeholder-transparent"
+                                placeholder="John Doe">
+                        </div>
+                        <div class="group relative">
+                            <label class="text-gray-500 text-xs font-bold mb-3 block uppercase tracking-wide">Email
+                                address</label>
+                            <input type="email"
+                                class="w-full bg-transparent border-b border-gray-800 py-3 focus:outline-none focus:border-neon text-white transition-colors duration-300 text-lg placeholder-transparent"
+                                placeholder="john@example.com">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10">
+                        <div class="group relative">
+                            <label class="text-gray-500 text-xs font-bold mb-3 block uppercase tracking-wide">Phone
+                                Number</label>
+                            <input type="tel"
+                                class="w-full bg-transparent border-b border-gray-800 py-3 focus:outline-none focus:border-neon text-white transition-colors duration-300 text-lg placeholder-transparent"
+                                placeholder="+91 ...">
+                        </div>
+                        <div class="group relative">
+                            <label
+                                class="text-gray-500 text-xs font-bold mb-3 block uppercase tracking-wide">Subject</label>
+                            <input type="text"
+                                class="w-full bg-transparent border-b border-gray-800 py-3 focus:outline-none focus:border-neon text-white transition-colors duration-300 text-lg placeholder-transparent"
+                                placeholder="Project Inquiry">
+                        </div>
+                    </div>
+
+                    <div class="group relative">
+                        <label
+                            class="text-gray-500 text-xs font-bold mb-3 block uppercase tracking-wide">Comments</label>
+                        <textarea rows="2"
+                            class="w-full bg-transparent border-b border-gray-800 py-3 focus:outline-none focus:border-neon text-white transition-colors duration-300 text-lg resize-none placeholder-transparent"
+                            placeholder="Tell me about your project..."></textarea>
+                    </div>
+
+                    <div class="pt-4">
+                        <button type="submit"
+                            class="w-full md:w-auto bg-neon text-black px-12 py-4 rounded-xl font-bold text-lg hover:bg-white transition-all duration-300 transform hover:-translate-y-1 shadow-[0_0_20px_rgba(176,241,39,0.3)]">
+                            Send message
+                        </button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </section>
+
+    <div class="relative w-full py-32 bg-black overflow-hidden z-20 flex justify-center items-center">
+
+        <div
+            class="absolute w-[120%] bg-neon py-4 -rotate-3 shadow-[0_0_40px_rgba(176,241,39,0.3)] z-20 border-y-4 border-black">
+            <div class="flex animate-marquee whitespace-nowrap">
+                <div class="flex shrink-0 gap-12 px-6 items-center">
+                    <span
+                        class="text-5xl md:text-7xl font-black text-black font-anton uppercase italic tracking-tighter">CREATIVE
+                        DEVELOPER</span>
+                    <span class="text-4xl text-black">●</span>
+                    <span
+                        class="text-5xl md:text-7xl font-black text-black font-anton uppercase italic tracking-tighter">UI/UX
+                        DESIGN</span>
+                    <span class="text-4xl text-black">●</span>
+                    <span
+                        class="text-5xl md:text-7xl font-black text-black font-anton uppercase italic tracking-tighter">SYSTEM
+                        ARCHITECT</span>
+                    <span class="text-4xl text-black">●</span>
+                </div>
+                <div class="flex shrink-0 gap-12 px-6 items-center">
+                    <span
+                        class="text-5xl md:text-7xl font-black text-black font-anton uppercase italic tracking-tighter">CREATIVE
+                        DEVELOPER</span>
+                    <span class="text-4xl text-black">●</span>
+                    <span
+                        class="text-5xl md:text-7xl font-black text-black font-anton uppercase italic tracking-tighter">UI/UX
+                        DESIGN</span>
+                    <span class="text-4xl text-black">●</span>
+                    <span
+                        class="text-5xl md:text-7xl font-black text-black font-anton uppercase italic tracking-tighter">SYSTEM
+                        ARCHITECT</span>
+                    <span class="text-4xl text-black">●</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="absolute w-[120%] bg-black/80 backdrop-blur-sm py-4 rotate-3 border-y border-neon/50 z-10">
+            <div class="flex animate-marquee whitespace-nowrap" style="animation-direction: reverse;">
+                <div class="flex shrink-0 gap-12 px-6 items-center">
+                    <span class="text-5xl md:text-7xl font-black text-transparent font-anton uppercase tracking-tighter"
+                        style="-webkit-text-stroke: 2px #B0F127;">FULL STACK</span>
+                    <span class="text-4xl text-neon">✦</span>
+                    <span class="text-5xl md:text-7xl font-black text-transparent font-anton uppercase tracking-tighter"
+                        style="-webkit-text-stroke: 2px #B0F127;">PROBLEM SOLVER</span>
+                    <span class="text-4xl text-neon">✦</span>
+                    <span class="text-5xl md:text-7xl font-black text-transparent font-anton uppercase tracking-tighter"
+                        style="-webkit-text-stroke: 2px #B0F127;">INNOVATION</span>
+                    <span class="text-4xl text-neon">✦</span>
+                </div>
+                <div class="flex shrink-0 gap-12 px-6 items-center">
+                    <span class="text-5xl md:text-7xl font-black text-transparent font-anton uppercase tracking-tighter"
+                        style="-webkit-text-stroke: 2px #B0F127;">FULL STACK</span>
+                    <span class="text-4xl text-neon">✦</span>
+                    <span class="text-5xl md:text-7xl font-black text-transparent font-anton uppercase tracking-tighter"
+                        style="-webkit-text-stroke: 2px #B0F127;">PROBLEM SOLVER</span>
+                    <span class="text-4xl text-neon">✦</span>
+                    <span class="text-5xl md:text-7xl font-black text-transparent font-anton uppercase tracking-tighter"
+                        style="-webkit-text-stroke: 2px #B0F127;">INNOVATION</span>
+                    <span class="text-4xl text-neon">✦</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <footer class="relative mt-20 pt-10 px-2 md:px-6 reveal pb-24">
+        <div
+            class="bg-[#050505] border-t-4 border-neon rounded-t-[3rem] md:rounded-t-[5rem] px-6 py-16 md:px-16 md:py-20 relative overflow-hidden shadow-[0_-10px_40px_rgba(176,241,39,0.1)]">
+
+            <div
+                class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 pointer-events-none select-none opacity-[0.03]">
+                <span class="font-anton text-[40vw] leading-none text-white whitespace-nowrap">RJ.</span>
+            </div>
+
+            <div
+                class="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-center gap-6 mb-16">
+                <div
+                    class="inline-flex items-center gap-3 px-5 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md">
+                    <span class="relative flex h-2 w-2">
+                        <span
+                            class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2 w-2 bg-neon"></span>
+                    </span>
+                    <span class="text-xs font-mono font-bold text-gray-300 uppercase tracking-widest">
+                        Class of 2026 • Open to Work
+                    </span>
+                </div>
+                <div
+                    class="hidden md:block h-px flex-grow mx-8 bg-gradient-to-r from-transparent via-white/20 to-transparent">
+                </div>
+                <div class="text-xs font-mono font-bold text-gray-500 uppercase tracking-widest">Coimbatore, IN</div>
+            </div>
+
+            <div class="relative z-10 grid grid-cols-1 md:grid-cols-2 gap-12 items-end">
+                <div>
+                    <h2 class="text-4xl md:text-6xl font-black text-white mb-8 tracking-tight">
+                        Next Gen <span class="text-neon">Engineer.</span>
+                    </h2>
+                    <div class="flex flex-wrap gap-4">
+                        <a href="#"
+                            class="w-14 h-14 border border-white/20 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:bg-neon hover:text-black hover:border-neon hover:scale-110 group">
+                            <i data-lucide="linkedin" class="w-6 h-6"></i>
+                        </a>
+                        <a href="#"
+                            class="w-14 h-14 border border-white/20 rounded-full flex items-center justify-center text-white transition-all duration-300 hover:bg-neon hover:text-black hover:border-neon hover:scale-110 group">
+                            <i data-lucide="github" class="w-6 h-6"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="flex flex-col md:items-end text-left md:text-right">
+                    <p class="text-gray-400 text-sm leading-relaxed max-w-xs mb-4">
+                        Building scalable systems and solving real-world problems. Graduating in 2026.
+                    </p>
+                    <p class="text-xs font-mono text-gray-600 uppercase tracking-widest">
+                        © 2026 Rajeswar S. All Rights Reserved.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div id="backToTopBtn"
+        class="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 translate-y-24 opacity-0 transition-all duration-700 ease-[cubic-bezier(0.25,1,0.5,1)] pointer-events-none">
+        <button onclick="window.scrollTo({top: 0, behavior: 'smooth'})"
+            class="group relative w-16 h-16 bg-black rounded-full flex items-center justify-center hover:scale-110 transition-transform duration-500 shadow-[0_0_30px_rgba(176,241,39,0.4)] border border-neon/50 pointer-events-auto cursor-pointer">
+
+            <i data-lucide="arrow-up"
+                class="w-5 h-5 text-neon absolute z-10 transition-transform duration-300 group-hover:-translate-y-1"></i>
+
+            <svg class="absolute w-full h-full animate-[spin_10s_linear_infinite] p-1" viewBox="0 0 100 100">
+                <path id="circlePath" d="M 50, 50 m -35, 0 a 35,35 0 1,1 70,0 a 35,35 0 1,1 -70,0" fill="none" />
+                <text
+                    class="text-[10px] font-bold uppercase fill-white/40 group-hover:fill-neon transition-colors duration-300 tracking-widest">
+                    <textPath href="#circlePath" startOffset="0%">
+                        BACK TO TOP • BACK TO TOP •
+                    </textPath>
+                </text>
+            </svg>
+        </button>
+    </div>
+
+    <script>
+        const backToTopBtn = document.getElementById('backToTopBtn');
+
+        window.addEventListener('scroll', () => {
+            // If user scrolled more than 100vh (past home section)
+            if (window.scrollY > window.innerHeight) {
+                backToTopBtn.classList.remove('translate-y-24', 'opacity-0'); // Show
+            } else {
+                backToTopBtn.classList.add('translate-y-24', 'opacity-0'); // Hide
+            }
+        });
+    </script>
+
+    <script>
+        lucide.createIcons();
+
+        // --- 1. PRELOADER SCRIPT ---
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            // Wait a little bit to show the animation
+            setTimeout(() => {
+                preloader.style.opacity = '0';
+                preloader.style.visibility = 'hidden';
+            }, 1800); // 1.8 seconds delay
+        });
+
+        // --- 2. HACKER TEXT SCRAMBLE EFFECT ---
+        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()";
+
+        document.querySelectorAll(".hacker-text").forEach(element => {
+            element.onmouseover = event => {
+                let iteration = 0;
+                const interval = setInterval(() => {
+                    event.target.innerText = event.target.innerText
+                        .split("")
+                        .map((letter, index) => {
+                            if (index < iteration) {
+                                return event.target.dataset.value[index];
+                            }
+                            return letters[Math.floor(Math.random() * 26)];
+                        })
+                        .join("");
+
+                    if (iteration >= event.target.dataset.value.length) {
+                        clearInterval(interval);
+                    }
+
+                    iteration += 1 / 3;
+                }, 30);
+            }
+        });
+
+        // --- 3. 3D TILT EFFECT SCRIPT ---
+        const tiltCards = document.querySelectorAll('.tilt-card');
+
+        tiltCards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left; // x position within the element.
+                const y = e.clientY - rect.top;  // y position within the element.
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -10; // Max rotation deg
+                const rotateY = ((x - centerX) / centerX) * 10;
+
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        // --- 4. MAGNETIC BUTTON EFFECT ---
+        const magnets = document.querySelectorAll('.magnetic-btn');
+        magnets.forEach((magnet) => {
+            magnet.addEventListener('mousemove', (e) => {
+                const position = magnet.getBoundingClientRect();
+                const x = e.clientX - position.left - position.width / 2;
+                const y = e.clientY - position.top - position.height / 2;
+
+                magnet.style.transform = `translate(${x * 0.3}px, ${y * 0.5}px)`;
+            });
+            magnet.addEventListener('mouseleave', () => {
+                magnet.style.transform = 'translate(0px, 0px)';
+            });
+        });
+
+
+        // SCROLL REVEAL ANIMATION SCRIPT
+        const observerOptions = {
+            root: null,
+            rootMargin: '0px',
+            threshold: 0.1 // Trigger when 10% of the element is visible
+        };
+
+        const observer = new IntersectionObserver((entries, observer) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('active');
+                }
+            });
+        }, observerOptions);
+
+        const revealElements = document.querySelectorAll('.reveal');
+        revealElements.forEach(el => observer.observe(el));
+
+        // --- GLOBAL SNOW SCRIPT ---
+        const snowContainer = document.getElementById('global-snow-container');
+        const particleCount = 50; // Number of snowflakes
+
+        for (let i = 0; i < particleCount; i++) {
+            const snowflake = document.createElement('div');
+            snowflake.classList.add('snowflake');
+
+            // Random Positioning & Animation
+            const size = Math.random() * 3 + 1 + 'px'; // Random size 1-4px
+            const left = Math.random() * 100 + '%';
+            const duration = Math.random() * 5 + 5 + 's'; // Speed between 5-10s
+            const delay = Math.random() * 5 + 's';
+            const opacity = Math.random() * 0.5 + 0.1;
+
+            snowflake.style.width = size;
+            snowflake.style.height = size;
+            snowflake.style.left = left;
+            snowflake.style.animationDuration = duration;
+            snowflake.style.animationDelay = delay;
+            snowflake.style.opacity = opacity;
+
+            // Optional: Make some particles Neon for style
+            if (Math.random() > 0.8) {
+                snowflake.style.background = '#B0F127';
+                snowflake.style.boxShadow = '0 0 5px #B0F127';
+            }
+
+            snowContainer.appendChild(snowflake);
+        }
+
+        // --- CUSTOM CURSOR SCRIPT (FINAL, STABLE) ---
+const cursorDot = document.getElementById("cursor-dot");
+const cursorOutline = document.getElementById("cursor-outline");
+
+/* Instant, safe tracking */
+window.addEventListener("mousemove", (e) => {
+    const x = e.clientX;
+    const y = e.clientY;
+
+    cursorDot.style.left = `${x}px`;
+    cursorDot.style.top = `${y}px`;
+
+    cursorOutline.style.left = `${x}px`;
+    cursorOutline.style.top = `${y}px`;
+});
+
+/* Hover feedback (visual only) */
+document.querySelectorAll("a, button, input, textarea").forEach(el => {
+    el.addEventListener("mouseenter", () => {
+        cursorOutline.style.transform = "translate(-50%, -50%) scale(1.5)";
+        cursorOutline.style.backgroundColor = "rgba(176,241,39,0.1)";
+        cursorDot.style.transform = "translate(-50%, -50%) scale(2)";
+    });
+
+    el.addEventListener("mouseleave", () => {
+        cursorOutline.style.transform = "translate(-50%, -50%) scale(1)";
+        cursorOutline.style.backgroundColor = "transparent";
+        cursorDot.style.transform = "translate(-50%, -50%) scale(1)";
+    });
+});
+
+
+    </script>
+
+</body>
+
+</html>
